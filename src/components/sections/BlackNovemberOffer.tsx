@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import campaignGlass from "@/assets/black-november-glass.jpg";
+import campaignGifts from "@/assets/black-november-gifts.jpg";
 import { Button } from "@/components/ui/button";
 import { BLACK_NOVEMBER, formatCampaignPrice } from "@/lib/black-november";
 
