@@ -1,5 +1,6 @@
 import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import BlackFridayRibbon from "@/components/BlackFridayRibbon";
 
 const WHATSAPP_LINK = "https://wa.me/5511983348749?text=Pagina%20de%20vendas";
 
@@ -26,7 +27,7 @@ const Navbar = () => {
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
         if (visible) setActive(visible.target.id);
       },
-      { threshold: [0.25, 0.5], rootMargin: "-96px 0px -45% 0px" },
+      { threshold: [0.25, 0.5], rootMargin: "-124px 0px -45% 0px" },
     );
 
     sections.forEach((section) => observer.observe(section));
@@ -55,6 +56,7 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/40">
+      <BlackFridayRibbon />
       <div className="mx-auto flex h-24 w-full max-w-[1440px] items-center justify-between gap-6 px-4 md:px-6 lg:px-8">
         <a href="/" onClick={scrollToTop} className="flex flex-shrink-0 items-center">
           <img

@@ -1,5 +1,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, CalendarCheck, Check, LockKeyhole, MessageCircle, ShieldCheck, Sparkles, X, Zap } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { BLACK_NOVEMBER, formatCampaignPrice } from "@/lib/black-november";
 
 const WHATSAPP_LINK = "https://wa.me/5511983348749?text=Pagina%20de%20vendas";
 
@@ -88,11 +90,11 @@ const PricingSection = () => {
 
           <motion.article
             {...entrance(24, 0.06)}
-            className="card-premium relative flex flex-col border-cyan-300/40 p-6 shadow-[0_0_30px_rgba(0,239,255,0.13),0_0_70px_rgba(0,239,255,0.05)] transition-[transform,border-color,box-shadow] duration-300 [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-0.5 [@media(hover:hover)_and_(pointer:fine)]:hover:border-cyan-300/55 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_0_34px_rgba(0,239,255,0.17),0_0_76px_rgba(0,239,255,0.06)] sm:p-8"
+            className="campaign-plan relative flex flex-col p-6 transition-[transform,border-color] duration-300 [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-0.5 sm:p-8"
           >
-            <div className="absolute -top-4 left-1/2 flex -translate-x-1/2 items-center gap-1.5 whitespace-nowrap rounded-full bg-gradient-to-br from-white to-cyan-300 px-5 py-1.5 text-sm font-bold text-[#0A192F]">
+            <div className="absolute -top-4 left-1/2 flex -translate-x-1/2 items-center gap-1.5 whitespace-nowrap rounded-full bg-campaign px-5 py-1.5 text-sm font-bold text-campaign-foreground">
               <Sparkles aria-hidden="true" className="h-4 w-4" />
-              MAIS VANTAJOSO
+              BLACK FRIDAY
             </div>
 
             <header className="mb-6 mt-2">
@@ -101,11 +103,14 @@ const PricingSection = () => {
             </header>
 
             <div className="mb-7">
+              <p className="mb-2 text-base text-foreground">De <s>{formatCampaignPrice(BLACK_NOVEMBER.originalPrice)}</s></p>
               <div>
-                <span className="text-5xl font-extrabold tracking-tight text-white">R$ 97</span>
-                <span className="text-white/70">/ano</span>
+                <span className="text-5xl font-extrabold text-foreground">{formatCampaignPrice(BLACK_NOVEMBER.price)}</span>
+                <span className="text-foreground">/ano</span>
               </div>
-              <p className="mt-2 text-sm font-medium text-cyan-200/80">Equivale a aproximadamente R$ 8,08/mês</p>
+              <p className="mt-3 text-sm font-bold text-campaign">Economize {formatCampaignPrice(BLACK_NOVEMBER.savings)} • {BLACK_NOVEMBER.discountPercent}% de desconto</p>
+              <p className="mt-2 text-sm text-foreground">{BLACK_NOVEMBER.accessMonths} meses de acesso.</p>
+              <p className="mt-2 text-xs text-foreground">Oferta válida até 30/11/2026.</p>
             </div>
 
             <ul className="mb-8 flex-1 space-y-3.5">
@@ -127,15 +132,12 @@ const PricingSection = () => {
               </li>
             </ul>
 
-            <a
-              href="https://pay.kiwify.com.br/46EL9cE"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-glow inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-xl px-5 py-4 text-center text-lg font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A192F]"
-            >
-              Assinar Plano Anual
-              <ArrowRight aria-hidden="true" className="h-5 w-5" />
-            </a>
+            <Button asChild variant="campaign" className="min-h-14 w-full whitespace-normal rounded-xl px-5 py-4 text-center text-lg font-bold">
+              <a href={BLACK_NOVEMBER.checkout} target="_blank" rel="noopener noreferrer">
+                Assinar Plano Anual
+                <ArrowRight aria-hidden="true" className="h-5 w-5" />
+              </a>
+            </Button>
           </motion.article>
         </div>
 
