@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import campaignGlass from "@/assets/black-november-glass.jpg";
+import campaignGifts from "@/assets/black-november-gifts.jpg";
 import { Button } from "@/components/ui/button";
 import { BLACK_NOVEMBER, formatCampaignPrice } from "@/lib/black-november";
 
@@ -14,7 +14,7 @@ const BlackNovemberOffer = () => {
       transition={{ duration: 0.65, ease: "easeOut" }}
       className="campaign-composition relative isolate mx-auto w-full max-w-[580px] overflow-hidden px-6 py-9 sm:px-10 sm:py-12"
     >
-      <img src={campaignGlass} alt="" width={1024} height={1024} className="absolute inset-0 -z-20 h-full w-full object-cover" />
+      <img src={campaignGifts} alt="" width={1024} height={1024} className="absolute inset-0 -z-20 h-full w-full object-cover" />
       <div className="campaign-composition-shade absolute inset-0 -z-10" />
       <p className="mb-7 flex items-center gap-3 text-xs font-extrabold text-campaign sm:text-sm">
         <span className="h-px w-8 bg-campaign" aria-hidden="true" />
