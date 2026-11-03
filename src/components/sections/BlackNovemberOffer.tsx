@@ -20,7 +20,7 @@ const BlackNovemberOffer = () => {
         <span className="h-px w-8 bg-campaign" aria-hidden="true" />
         BLACK NOVEMBER 2026
       </p>
-      <h2 className="max-w-[13ch] text-3xl font-extrabold leading-[1.12] text-foreground sm:text-4xl lg:text-5xl">
+      <h2 className="max-w-[13ch] text-2xl font-extrabold leading-[1.12] text-foreground min-[380px]:text-3xl sm:text-4xl lg:text-5xl">
         SEU ANO DE <span className="text-campaign">OPORTUNIDADES</span>
       </h2>
       <div className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-2">
