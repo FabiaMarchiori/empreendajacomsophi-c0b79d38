@@ -4,14 +4,12 @@ import {
   type MotionValue,
   useInView,
   useReducedMotion,
-  useScroll,
-  useSpring,
   useTransform,
 } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-import HeroTablet from "@/components/sections/HeroTablet";
+import BlackNovemberOffer from "@/components/sections/BlackNovemberOffer";
 
 const NICHES = [
   { name: "Papelaria Fofa", count: 29 },
@@ -320,8 +318,6 @@ const HeroSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const reduced = !!useReducedMotion();
   const copyInView = useInView(sectionRef, { once: true, amount: 0.16 });
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 105, damping: 24, mass: 0.35 });
   const fade = (delay: number) =>
     reduced
       ? {}
@@ -335,7 +331,7 @@ const HeroSection = () => {
     <section
       id="inicio"
       ref={sectionRef}
-      className="relative flex items-center overflow-hidden pt-24 lg:min-h-[calc(100svh-2rem)]"
+      className="campaign-hero relative flex items-center overflow-hidden lg:min-h-[calc(100svh-2rem)]"
       style={{ background: "#0A192F" }}
     >
       {/* Soft ambient glows */}
@@ -417,7 +413,7 @@ const HeroSection = () => {
 
           {/* Product */}
           <div className="min-w-0 w-full min-[960px]:justify-self-end">
-            <HeroTablet scrollProgress={smoothProgress} />
+            <BlackNovemberOffer />
           </div>
         </div>
       </div>

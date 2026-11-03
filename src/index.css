@@ -27,6 +27,15 @@
     --ring: 184 100% 47%;
     --radius: 0.75rem;
     --deep: 212 90% 8%;
+    --campaign: 156 100% 39.2157%;
+    --campaign-foreground: 213 78% 7%;
+    --campaign-ribbon-height: 28px;
+    --navigation-height: calc(96px + var(--campaign-ribbon-height));
+    --campaign-composition-background: 216 85% 8%;
+    --campaign-composition-shade: linear-gradient(90deg, hsl(216 85% 8% / 0.82), hsl(216 85% 8% / 0.28));
+    --campaign-plan-background: linear-gradient(150deg, hsl(var(--campaign) / 0.08), hsl(var(--card)) 55%);
+    --campaign-plan-shadow: inset 0 1px 0 hsl(var(--campaign) / 0.2), 0 0 32px hsl(var(--campaign) / 0.12);
+    --campaign-button-shadow: 0 6px 24px hsl(var(--campaign) / 0.18);
     --glow-cyan: 0 0% 0% / 0;
     --sidebar-background: 213 78% 11%;
     --sidebar-foreground: 0 0% 100%;
@@ -40,12 +49,61 @@
 }
 
 @layer base {
+  html {
+    scroll-padding-top: calc(var(--navigation-height) + 16px);
+  }
   * {
     @apply border-border;
   }
   body {
     @apply bg-background text-foreground font-manrope antialiased;
   }
+}
+
+.campaign-ribbon {
+  height: var(--campaign-ribbon-height);
+  overflow: hidden;
+  background: hsl(var(--campaign));
+  color: hsl(var(--campaign-foreground));
+}
+.campaign-ribbon-track {
+  display: flex;
+  width: max-content;
+  height: 100%;
+  animation: campaign-marquee 70s linear infinite;
+}
+.campaign-ribbon-group {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+}
+.campaign-ribbon-group span {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding-right: 24px;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+.campaign-ribbon-group span::after { content: "✦"; }
+@keyframes campaign-marquee { to { transform: translateX(-50%); } }
+.campaign-hero { padding-top: var(--navigation-height); }
+.campaign-composition {
+  background: hsl(var(--campaign-composition-background));
+  border-radius: 8px;
+}
+.campaign-composition-shade { background: var(--campaign-composition-shade); }
+.campaign-plan {
+  border: 1px solid hsl(var(--campaign) / 0.5);
+  border-radius: 1rem;
+  background: var(--campaign-plan-background);
+  box-shadow: var(--campaign-plan-shadow);
+}
+.campaign-button { box-shadow: var(--campaign-button-shadow); }
+@media (prefers-reduced-motion: reduce) {
+  .campaign-ribbon-track { animation: none; }
 }
 
 /* Gradient text utility */

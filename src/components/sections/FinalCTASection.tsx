@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, MessageCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { BLACK_NOVEMBER, formatCampaignPrice } from "@/lib/black-november";
 
 const WHATSAPP_LINK = "https://wa.me/5511983348749?text=Pagina%20de%20vendas";
 
@@ -17,21 +19,21 @@ const FinalCTASection = () => (
         className="max-w-3xl mx-auto text-center space-y-8"
       >
         <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
-          <span className="text-white">Seu negócio não precisa depender de </span>
-          <span className="gradient-text">tentativa e erro.</span>
+          <span className="text-foreground">AINDA DÁ TEMPO DE </span>
+          <span className="text-campaign">TRANSFORMAR SEU NEGÓCIO!</span>
         </h2>
         <p className="text-lg md:text-xl text-white max-w-2xl mx-auto leading-relaxed">
-          Tenha fornecedores, ferramentas e orientação reunidos em uma plataforma para ajudar você a comprar, precificar, organizar e tomar decisões com mais clareza.
+          Um ano de acesso ao EmpreendaJá com Soph por apenas {formatCampaignPrice(BLACK_NOVEMBER.price)}.
         </p>
+        <p className="text-base text-foreground">Aproveite a Black November até 30 de novembro de 2026.</p>
 
         <div className="flex flex-col items-center justify-center gap-4 pt-4 sm:flex-row">
-          <a
-            href="#planos"
-            className="btn-glow inline-flex w-full items-center justify-center gap-2 rounded-xl px-10 py-5 text-lg font-bold sm:w-auto"
-          >
-            Quero entrar agora
-            <ArrowRight className="w-5 h-5" />
-          </a>
+          <Button asChild variant="campaign" className="h-auto min-h-14 w-full whitespace-normal rounded-xl px-6 py-5 text-base font-bold sm:w-auto">
+            <a href="#planos">
+              QUERO APROVEITAR A OFERTA
+              <ArrowRight className="w-5 h-5" />
+            </a>
+          </Button>
           <a
             href={WHATSAPP_LINK}
             target="_blank"

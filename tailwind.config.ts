@@ -23,6 +23,10 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         deep: "hsl(var(--deep))",
+        campaign: {
+          DEFAULT: "hsl(var(--campaign))",
+          foreground: "hsl(var(--campaign-foreground))",
+        },
         cyan: {
           DEFAULT: "#00EFFF",
           50: "#E0FDFF",
