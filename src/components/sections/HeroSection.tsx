@@ -318,12 +318,18 @@ const benefits = ["Fornecedores verificados", "Acesso imediato", "7 dias de gara
 
 const HeroSection = () => (
   <section id="inicio" className="campaign-hero relative isolate overflow-hidden bg-[#061423]">
-    <div className="relative z-10 mx-auto w-full max-w-[1440px] px-5 pt-9 sm:px-8 sm:pt-12 lg:flex lg:min-h-[max(26rem,33.333vw)] lg:items-center lg:py-12 xl:px-12">
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 bg-no-repeat bg-right [background-size:auto_clamp(6rem,37vw,18rem)] top-[var(--navigation-height)] lg:bg-contain"
+      style={{ backgroundImage: `url("${heroTablet}")` }}
+    />
+    <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 w-[45%] bg-gradient-to-r from-[#061423] to-transparent lg:hidden" />
+    <div className="relative z-10 mx-auto w-full max-w-[1440px] px-5 py-9 sm:px-8 sm:py-12 lg:flex lg:min-h-[max(26rem,33.333vw)] lg:items-center lg:py-12 xl:px-12">
       <div className="max-w-xl lg:w-[46%]">
         <h1 className="max-w-[15ch] text-4xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-5xl xl:text-6xl">
           Seu próximo <span className="text-cyan-300">fornecedor</span> pode estar aqui.
         </h1>
-        <p className="mt-5 max-w-lg text-base leading-relaxed text-slate-200 sm:text-lg">
+        <p className="mt-5 max-w-[min(56%,32ch)] text-base lg:max-w-lg leading-relaxed text-slate-200 sm:text-lg">
           Encontre importadoras e fornecedores da 25 de Março de forma mais rápida, organizada e segura.
         </p>
         <a
@@ -342,15 +348,6 @@ const HeroSection = () => (
           ))}
         </ul>
       </div>
-    </div>
-    <div className="mt-2 flex justify-end overflow-hidden lg:absolute lg:inset-x-0 lg:bottom-0 lg:top-[var(--navigation-height)] lg:mt-0">
-      <img
-        src={heroTablet}
-        alt="Tablet com a tela inicial do EmpreendaJá com Soph"
-        width={2172}
-        height={724}
-        className="h-auto w-[168%] max-w-none shrink-0 lg:h-full lg:w-full lg:object-contain lg:object-right"
-      />
     </div>
   </section>
 );
