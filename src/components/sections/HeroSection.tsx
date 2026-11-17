@@ -317,29 +317,18 @@ export const HeroImportersPanel = ({ scrollProgress }: { scrollProgress: MotionV
 const benefits = ["Fornecedores verificados", "Acesso imediato", "7 dias de garantia"];
 
 const HeroSection = () => (
-  <section id="inicio" className="campaign-hero relative isolate overflow-hidden bg-[#061423]">
-    <div className="mx-auto w-full max-w-[1440px] px-5 pb-8 pt-8 sm:px-8 sm:py-10 lg:grid lg:min-h-[max(26rem,33.333vw)] lg:content-center lg:py-12 xl:px-12">
-      <div className="relative z-10 max-w-xl lg:w-[46%]">
+  <section id="inicio" className="campaign-hero relative isolate overflow-hidden bg-[#061423] pb-[calc(min(54.667vw,19.133rem)+0.5rem)] lg:pb-0">
+    <div className="relative z-10 mx-auto w-full max-w-[1440px] px-5 pt-9 sm:px-8 sm:pt-12 lg:flex lg:min-h-[max(26rem,33.333vw)] lg:items-center lg:py-12 xl:px-12">
+      <div className="max-w-xl lg:w-[46%]">
         <h1 className="max-w-[15ch] text-4xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-5xl xl:text-6xl">
           Seu próximo <span className="text-cyan-300">fornecedor</span> pode estar aqui.
         </h1>
         <p className="mt-5 max-w-lg text-base leading-relaxed text-slate-200 sm:text-lg">
           Encontre importadoras e fornecedores da 25 de Março de forma mais rápida, organizada e segura.
         </p>
-      </div>
-      <div className="pointer-events-none relative -mx-5 mt-1 flex max-w-[640px] justify-end overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_6%,black_94%,transparent)] sm:mx-auto sm:w-full lg:absolute lg:inset-x-0 lg:bottom-0 lg:top-[var(--navigation-height)] lg:mt-0 lg:max-w-none lg:[mask-image:none]">
-        <img
-          src={heroTablet}
-          alt="Tablet com a tela inicial do EmpreendaJá com Soph"
-          width={2172}
-          height={724}
-          className="h-auto w-[164%] max-w-none shrink-0 lg:h-full lg:w-full lg:object-contain lg:object-right"
-        />
-      </div>
-      <div className="relative z-10 max-w-xl lg:w-[46%]">
         <a
           href="#planos"
-          className="mt-1 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-xl bg-cyan-300 px-4 py-3 text-center text-sm font-extrabold text-[#061423] transition-colors hover:bg-cyan-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#061423] sm:w-auto sm:px-6 lg:mt-7"
+          className="mt-7 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-xl bg-cyan-300 px-4 py-3 text-center text-sm font-extrabold text-[#061423] transition-colors hover:bg-cyan-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#061423] sm:w-auto sm:px-6"
         >
           QUERO ACESSAR OS FORNECEDORES
           <ArrowRight aria-hidden="true" className="h-5 w-5 shrink-0" />
@@ -353,6 +342,15 @@ const HeroSection = () => (
           ))}
         </ul>
       </div>
+    </div>
+    <div className="pointer-events-none absolute inset-x-0 bottom-0 mx-auto flex max-w-[560px] justify-end overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_8%,black_92%,transparent)] sm:[mask-image:linear-gradient(to_bottom,transparent,black_8%,black_92%,transparent),linear-gradient(to_right,transparent,black_12%,black_99%,transparent)] sm:[mask-composite:intersect] lg:top-[var(--navigation-height)] lg:max-w-none lg:[mask-image:none]">
+      <img
+        src={heroTablet}
+        alt="Tablet com a tela inicial do EmpreendaJá com Soph"
+        width={2172}
+        height={724}
+        className="h-auto w-[164%] max-w-none shrink-0 lg:h-full lg:w-full lg:object-contain lg:object-right"
+      />
     </div>
   </section>
 );
