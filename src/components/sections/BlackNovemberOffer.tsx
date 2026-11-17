@@ -10,22 +10,16 @@ const BlackNovemberOffer = () => (
   <section aria-labelledby="black-friday-title" className="relative isolate overflow-hidden border-t border-cyan-300/15 bg-[#031522]">
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 bg-no-repeat [background-position:right_-2.75rem_center] [background-size:auto_64%] max-lg:[mask-image:linear-gradient(to_bottom,transparent_18%,black_28%,black_72%,transparent_82%)] lg:bg-contain xl:bg-cover lg:bg-right"
+      className="pointer-events-none absolute inset-0 bg-no-repeat bg-right [background-size:auto_clamp(6rem,37vw,18rem)] lg:bg-contain xl:bg-cover"
       style={{ backgroundImage: `url("${campaignGifts}")` }}
     />
-    <div
-      aria-hidden="true"
-      className="pointer-events-none absolute inset-0 lg:hidden"
-      style={{
-        background: "linear-gradient(180deg,#031522,transparent 23%,transparent 72%,#031522), linear-gradient(90deg,#031522 5%,rgba(3,21,34,.98) 43%,rgba(3,21,34,.83) 76%,rgba(3,21,34,.18))",
-      }}
-    />
+    <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 w-[45%] bg-gradient-to-r from-[#031522] to-transparent lg:hidden" />
     <div className="relative z-10 mx-auto w-full max-w-[1440px] px-5 py-10 sm:px-8 sm:py-12 lg:flex lg:min-h-[max(31rem,33.333vw)] lg:items-center lg:py-10 xl:px-12">
       <div className="max-w-xl lg:w-[46%]">
         <h2 id="black-friday-title" className="max-w-[18ch] text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl xl:text-5xl">
           Seu ano de oportunidades <span className="text-cyan-300">começa agora.</span>
         </h2>
-        <p className="mt-4 max-w-[32ch] text-base lg:max-w-lg leading-relaxed text-slate-200 sm:text-lg">
+        <p className="mt-4 max-w-[min(56%,32ch)] text-base lg:max-w-lg leading-relaxed text-slate-200 sm:text-lg">
           Entre na plataforma com a oferta de Black Friday e tenha acesso a fornecedores, categorias e ferramentas para comprar melhor.
         </p>
         <div className="mt-6">
