@@ -139,7 +139,7 @@ const ModulesSection = () => {
 
   return (
     <>
-      <section className="relative overflow-hidden bg-deep py-16 md:py-24">
+      <section className="relative overflow-hidden bg-deep pb-16 pt-10 md:pb-24 md:pt-16">
         <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-0 h-[420px] w-[min(700px,92vw)] -translate-x-1/2 rounded-full bg-cyan-500/[0.035] blur-[150px]" />
 
         <div className="container relative z-10 mx-auto px-4">
@@ -176,7 +176,7 @@ const ModulesSection = () => {
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-[#0A192F] py-16 md:py-24">
+      <section id="ecossistema" className="relative overflow-hidden bg-[#0A192F] py-16 md:py-24">
         <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-[48%] h-[620px] w-[min(980px,94vw)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400/[0.045] blur-[170px]" />
 
         <div className="relative z-10 mx-auto w-full max-w-[1280px] px-4">
