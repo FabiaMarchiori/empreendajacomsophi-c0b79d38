@@ -9,7 +9,7 @@ import {
 import { ArrowRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-import BlackNovemberOffer from "@/components/sections/BlackNovemberOffer";
+import heroTablet from "@/assets/hero-tablet-home.png";
 
 const NICHES = [
   { name: "Papelaria Fofa", count: 29 },
@@ -314,111 +314,45 @@ export const HeroImportersPanel = ({ scrollProgress }: { scrollProgress: MotionV
   );
 };
 
-const HeroSection = () => {
-  const sectionRef = useRef<HTMLElement>(null);
-  const reduced = !!useReducedMotion();
-  const copyInView = useInView(sectionRef, { once: true, amount: 0.16 });
-  const fade = (delay: number) =>
-    reduced
-      ? {}
-      : {
-          initial: { opacity: 0.96, y: 6 },
-          animate: { opacity: 1, y: 0 },
-          transition: { duration: 0.4, delay: delay * 0.45, ease: "easeOut" as const },
-        };
+const benefits = ["Fornecedores verificados", "Acesso imediato", "7 dias de garantia"];
 
-  return (
-    <section
-      id="inicio"
-      ref={sectionRef}
-      className="campaign-hero relative flex items-center overflow-hidden lg:min-h-[calc(100svh-2rem)]"
-      style={{ background: "#0A192F" }}
-    >
-      {/* Soft ambient glows */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute left-[10%] top-1/4 h-[520px] w-[520px] rounded-full opacity-40"
-        style={{ background: "radial-gradient(circle, rgba(0,239,255,0.07) 0%, transparent 70%)" }}
-      />
-
-      <div className="relative z-10 mx-auto w-full max-w-[1440px] px-5 py-12 sm:px-6 lg:px-8 lg:py-8 xl:py-10">
-        <div className="grid items-center gap-10 min-[960px]:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] min-[960px]:gap-10 xl:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] xl:gap-12">
-          {/* Content */}
-          <div className="min-w-0 space-y-6">
-            <motion.p
-              {...fade(0)}
-              className="text-[10px] font-bold uppercase tracking-[0.18em] text-cyan-300/80 sm:text-[11px]"
-            >
-              EmpreendaJá com Soph • Plataforma para quem empreende
-            </motion.p>
-
-            <motion.h1
-              {...fade(0.08)}
-              className="max-w-[16ch] text-[2.1rem] font-extrabold leading-[1.1] tracking-tight text-white sm:text-[2.6rem] lg:text-[3.35rem]"
-            >
-              Seu próximo <span className="gradient-text">fornecedor</span> pode estar aqui.
-            </motion.h1>
-
-            <motion.p
-              {...fade(0.16)}
-              className="max-w-xl text-[1.0625rem] leading-[1.65] text-white/90 sm:text-lg sm:leading-relaxed"
-            >
-              <span
-                className="mr-1 text-2xl font-extrabold sm:text-3xl"
-                style={{
-                  background: "linear-gradient(90deg, #FFFFFF 0%, #00FFFF 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
-                <Counter start={copyInView} reduced={reduced} />
-              </span>
-              fornecedores e importadoras para descobrir novas oportunidades de compra, margem e revenda.
-            </motion.p>
-
-            <motion.p {...fade(0.24)} className="max-w-xl text-sm leading-relaxed text-white/70 sm:text-base">
-              Encontre fornecedores de diferentes nichos e tenha acesso a uma plataforma com ferramentas para ajudar
-              você a precificar, organizar e administrar seu negócio.
-            </motion.p>
-
-            <motion.div {...fade(0.32)} className="pt-1">
-              <a
-                href="#planos"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-xl px-7 py-4 text-sm font-extrabold uppercase tracking-wide transition-all duration-300 hover:-translate-y-0.5 hover:brightness-105 active:translate-y-0 active:scale-[0.98] sm:w-auto sm:text-base"
-                style={{
-                  background: "linear-gradient(135deg, #FFFFFF 0%, #F2FBFF 30%, #00EFFF 100%)",
-                  color: "#0A192F",
-                  boxShadow: "0 0 28px rgba(0,239,255,0.28)",
-                }}
-              >
-                Quero acessar os fornecedores
-                <ArrowRight className="h-5 w-5" />
-              </a>
-            </motion.div>
-
-            <motion.div
-              {...fade(0.4)}
-              className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-white/70"
-            >
-              <span className="inline-flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />7 dias de garantia
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
-                Acesso imediato
-              </span>
-            </motion.div>
-          </div>
-
-          {/* Product */}
-          <div className="min-w-0 w-full min-[960px]:justify-self-end">
-            <BlackNovemberOffer />
-          </div>
-        </div>
+const HeroSection = () => (
+  <section id="inicio" className="campaign-hero relative isolate overflow-hidden bg-[#061423]">
+    <div className="relative z-10 mx-auto w-full max-w-[1440px] px-5 pt-9 sm:px-8 sm:pt-12 lg:flex lg:min-h-[max(26rem,33.333vw)] lg:items-center lg:py-12 xl:px-12">
+      <div className="max-w-xl lg:w-[46%]">
+        <h1 className="max-w-[15ch] text-4xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-5xl xl:text-6xl">
+          Seu próximo <span className="text-cyan-300">fornecedor</span> pode estar aqui.
+        </h1>
+        <p className="mt-5 max-w-lg text-base leading-relaxed text-slate-200 sm:text-lg">
+          Encontre importadoras e fornecedores da 25 de Março de forma mais rápida, organizada e segura.
+        </p>
+        <a
+          href="#planos"
+          className="mt-7 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-xl bg-cyan-300 px-4 py-3 text-center text-sm font-extrabold text-[#061423] transition-colors hover:bg-cyan-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#061423] sm:w-auto sm:px-6"
+        >
+          QUERO ACESSAR OS FORNECEDORES
+          <ArrowRight aria-hidden="true" className="h-5 w-5 shrink-0" />
+        </a>
+        <ul className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-sm text-slate-200">
+          {benefits.map((benefit) => (
+            <li key={benefit} className="inline-flex items-center gap-2">
+              <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-cyan-300" />
+              {benefit}
+            </li>
+          ))}
+        </ul>
       </div>
-    </section>
-  );
-};
+    </div>
+    <div className="mt-2 flex justify-end overflow-hidden lg:absolute lg:inset-x-0 lg:bottom-0 lg:top-[var(--navigation-height)] lg:mt-0">
+      <img
+        src={heroTablet}
+        alt="Tablet com a tela inicial do EmpreendaJá com Soph"
+        width={2172}
+        height={724}
+        className="h-auto w-[168%] max-w-none shrink-0 lg:h-full lg:w-full lg:object-contain lg:object-right"
+      />
+    </div>
+  </section>
+);
 
 export default HeroSection;

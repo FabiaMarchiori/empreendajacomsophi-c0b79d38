@@ -1,12 +1,11 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowLeft, ArrowRight, Bot, Calculator, LayoutDashboard, Package } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-import managementScreen from "@/assets/mod-erp.png";
-import importersScreen from "@/assets/mod-importadoras.png";
-import pricingScreen from "@/assets/mod-precificacao.png";
-import sophScreen from "@/assets/mod-soph.png";
-import thankYouScreen from "@/assets/tela-obrigado-original.png";
+import suppliersTablet from "@/assets/tour-tablet-fornecedores.png";
+import importersTablet from "@/assets/tour-tablet-importadoras.png";
+import categoriesTablet from "@/assets/tour-tablet-categorias.png";
+import homeTablet from "@/assets/tour-tablet-home.png";
 
 const pillars = [
   {
@@ -45,66 +44,42 @@ const pillars = [
 
 const slides = [
   {
-    label: "Fornecedores",
-    eyebrow: "CENTRAL DE FORNECEDORES",
-    title: "Explore opções organizadas por nichos.",
-    description: "Encontre fornecedores e importadoras de diferentes categorias para comparar possibilidades de compra.",
-    image: importersScreen,
-    alt: "Interface real da Central de Fornecedores organizada por categorias",
-    aspectRatio: "1024 / 912",
-    portrait: false,
+    label: "Central de Fornecedores",
+    title: "Encontre fornecedores com mais facilidade.",
+    description: "Explore diferentes segmentos, descubra oportunidades de compra e encontre fornecedores em um só lugar.",
+    image: suppliersTablet,
   },
   {
-    label: "Precificação",
-    eyebrow: "PRECIFICAÇÃO",
-    title: "Calcule preços com mais clareza.",
-    description: "Organize custos, taxas, impostos e margem para entender melhor a formação do seu preço de venda.",
-    image: pricingScreen,
-    alt: "Interface real da Central de Precificação",
-    aspectRatio: "1024 / 973",
-    portrait: false,
+    label: "Importadoras 25 de Março",
+    title: "Oportunidades da 25 de Março, mais perto de você.",
+    description: "Explore importadoras, encontre contatos e organize seus fornecedores favoritos sem precisar pesquisar em vários lugares.",
+    image: importersTablet,
   },
   {
-    label: "Gestão",
-    eyebrow: "GESTÃO DO NEGÓCIO",
-    title: "Acompanhe e organize seu negócio.",
-    description: "Visualize informações importantes da operação em uma área criada para apoiar sua organização.",
-    image: managementScreen,
-    alt: "Interface real da Gestão do Negócio",
-    aspectRatio: "1024 / 933",
-    portrait: false,
+    label: "Categorias",
+    title: "Escolha seu nicho. Descubra novas possibilidades.",
+    description: "De bolsas e acessórios a papelaria, cosméticos e eletrônicos. Navegue pelas categorias e encontre fornecedores para o seu negócio.",
+    image: categoriesTablet,
   },
   {
-    label: "Soph",
-    eyebrow: "SOPH — SUA SÓCIA DIGITAL",
-    title: "Tenha orientação dentro da plataforma.",
-    description: "Conte com a Soph como apoio ao longo da sua jornada e das decisões do dia a dia.",
-    image: sophScreen,
-    alt: "Interface real da Soph, sua sócia digital",
-    aspectRatio: "1024 / 910",
-    portrait: false,
-  },
-  {
-    label: "Após a compra",
-    eyebrow: "APÓS A COMPRA",
-    title: "Seu acesso começa aqui.",
-    description: "Assim que o pagamento for confirmado, você verá a tela com as informações para acessar a plataforma. Leia as orientações com atenção antes de fechar a página.",
-    image: thankYouScreen,
-    alt: "Captura original da Tela de Obrigado exibida após a confirmação do pagamento",
-    aspectRatio: "1368 / 1669",
-    portrait: true,
+    label: "Home",
+    title: "Muito além dos fornecedores.",
+    description: "Tenha acesso a ferramentas para estruturar seu negócio, organizar sua gestão, calcular preços e contar com o apoio da Soph.",
+    image: homeTablet,
   },
 ];
 
+const autoplayDelay = 4000;
+const arrowClassName = "inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-cyan-300/35 bg-[#071c32] text-cyan-100 transition-colors duration-300 hover:border-cyan-200/65 hover:bg-[#0d2944] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/80 motion-reduce:transition-none min-[900px]:absolute min-[900px]:top-1/2 min-[900px]:-translate-y-1/2";
+
 const ModulesSection = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [direction, setDirection] = useState(1);
   const [tourInView, setTourInView] = useState(false);
   const [pageVisible, setPageVisible] = useState(() => typeof document === "undefined" || !document.hidden);
-  const [hoveringTour, setHoveringTour] = useState(false);
-  const [touchingTour, setTouchingTour] = useState(false);
-  const [resumeAt, setResumeAt] = useState(0);
+  const [pressedPointer, setPressedPointer] = useState<number | null>(null);
+  const [interaction, setInteraction] = useState(0);
   const tourRef = useRef<HTMLDivElement>(null);
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
   const reduced = !!useReducedMotion();
   const activeSlide = slides[activeIndex];
   const reveal = (delay = 0, distance = 18) => ({
@@ -114,74 +89,57 @@ const ModulesSection = () => {
     transition: { duration: 0.5, delay: reduced ? 0 : delay, ease: "easeOut" as const },
   });
 
-  const selectSlide = (nextIndex: number) => {
-    const normalizedIndex = (nextIndex + slides.length) % slides.length;
-    setDirection(normalizedIndex > activeIndex || (activeIndex === slides.length - 1 && normalizedIndex === 0) ? 1 : -1);
-    setActiveIndex(normalizedIndex);
-  };
-
   const paginate = (step: number) => {
-    setDirection(step);
+    setInteraction((count) => count + 1);
     setActiveIndex((current) => (current + step + slides.length) % slides.length);
   };
 
-  const holdAutoplay = useCallback((delay = 3000) => {
-    setResumeAt(Date.now() + delay);
-  }, []);
-
-  const selectWithInteraction = (nextIndex: number) => {
-    holdAutoplay();
-    selectSlide(nextIndex);
+  const selectSlide = (index: number) => {
+    setInteraction((count) => count + 1);
+    setActiveIndex(index);
   };
-
-  const paginateWithInteraction = (step: number) => {
-    holdAutoplay();
-    paginate(step);
-  };
-
-  useEffect(() => {
-    slides.forEach((slide) => {
-      const image = new Image();
-      image.src = slide.image;
-    });
-  }, []);
 
   useEffect(() => {
     const node = tourRef.current;
     if (!node) return;
 
-    const observer = new IntersectionObserver(([entry]) => setTourInView(entry.isIntersecting), { threshold: 0.18 });
-    const handleVisibility = () => setPageVisible(!document.hidden);
+    const observer = new IntersectionObserver(([entry]) => setTourInView(entry.intersectionRatio >= 0.18), { threshold: 0.18 });
+    const handleVisibility = () => {
+      setPageVisible(!document.hidden);
+      if (document.hidden) setPressedPointer(null);
+    };
+    const releasePointer = (event: PointerEvent) => {
+      setPressedPointer((pointer) => pointer === event.pointerId ? null : pointer);
+    };
+    const clearPointer = () => setPressedPointer(null);
 
     observer.observe(node);
     document.addEventListener("visibilitychange", handleVisibility);
+    window.addEventListener("pointerup", releasePointer);
+    window.addEventListener("pointercancel", releasePointer);
+    window.addEventListener("blur", clearPointer);
     return () => {
       observer.disconnect();
       document.removeEventListener("visibilitychange", handleVisibility);
+      window.removeEventListener("pointerup", releasePointer);
+      window.removeEventListener("pointercancel", releasePointer);
+      window.removeEventListener("blur", clearPointer);
     };
   }, []);
 
   useEffect(() => {
-    if (reduced || !tourInView || !pageVisible || hoveringTour || touchingTour) return;
+    if (reduced || !tourInView || !pageVisible || pressedPointer !== null) return;
 
-    const delay = Math.max(2900, resumeAt - Date.now());
     const timer = window.setTimeout(() => {
-      setDirection(1);
       setActiveIndex((current) => (current + 1) % slides.length);
-    }, delay);
+    }, autoplayDelay);
 
     return () => window.clearTimeout(timer);
-  }, [activeIndex, hoveringTour, pageVisible, reduced, resumeAt, touchingTour, tourInView]);
-
-  const slideVariants = {
-    enter: (travelDirection: number) => reduced ? { opacity: 0 } : { opacity: 0, x: travelDirection > 0 ? 34 : -34, scale: 0.992 },
-    center: { opacity: 1, x: 0, scale: 1 },
-    exit: (travelDirection: number) => reduced ? { opacity: 0 } : { opacity: 0, x: travelDirection > 0 ? -26 : 26, scale: 0.994 },
-  };
+  }, [activeIndex, interaction, pageVisible, pressedPointer, reduced, tourInView]);
 
   return (
     <>
-      <section className="relative overflow-hidden bg-deep py-16 md:py-24">
+      <section className="relative overflow-hidden bg-deep pb-16 pt-10 md:pb-24 md:pt-16">
         <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-0 h-[420px] w-[min(700px,92vw)] -translate-x-1/2 rounded-full bg-cyan-500/[0.035] blur-[150px]" />
 
         <div className="container relative z-10 mx-auto px-4">
@@ -218,14 +176,12 @@ const ModulesSection = () => {
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-[#0A192F] py-16 md:py-24">
+      <section id="ecossistema" className="relative overflow-hidden bg-[#0A192F] py-16 md:py-24">
         <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-[48%] h-[620px] w-[min(980px,94vw)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400/[0.045] blur-[170px]" />
 
         <div className="relative z-10 mx-auto w-full max-w-[1280px] px-4">
-          <motion.header {...reveal()} className="mx-auto mb-10 max-w-4xl text-center md:mb-12">
-            <span className="mb-5 inline-block text-xs font-extrabold uppercase tracking-[0.22em] text-cyan-300">VEJA O EMPREENDAJÁ POR DENTRO</span>
-            <h2 className="text-3xl font-extrabold leading-tight tracking-tight text-white md:text-4xl lg:text-5xl">Veja o EmpreendaJá <span className="gradient-text">por dentro.</span></h2>
-            <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-white sm:text-lg">Conheça alguns dos principais recursos da plataforma e veja o que acontece depois da compra.</p>
+          <motion.header {...reveal()} className="mx-auto mb-6 max-w-4xl text-center md:mb-10">
+            <h2 className="text-3xl font-extrabold leading-tight tracking-tight text-white md:text-4xl lg:text-5xl">Conheça a plataforma <span className="gradient-text">por dentro</span></h2>
           </motion.header>
 
           <motion.div
@@ -235,86 +191,77 @@ const ModulesSection = () => {
             aria-roledescription="carrossel"
             aria-label="Tour da plataforma EmpreendaJá"
             tabIndex={0}
-            onPointerMove={(event) => {
-              const moved = event.movementX !== 0 || event.movementY !== 0;
-              if (event.pointerType === "mouse" && moved && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-                setHoveringTour(true);
-              }
+            onFocusCapture={() => setInteraction((count) => count + 1)}
+            onPointerDown={(event) => {
+              if (event.isPrimary && event.button === 0) setPressedPointer(event.pointerId);
             }}
-            onMouseLeave={() => {
-              setHoveringTour(false);
-              holdAutoplay();
-            }}
-            onFocusCapture={() => holdAutoplay()}
-            onBlurCapture={() => holdAutoplay()}
-            onPointerDown={() => setTouchingTour(true)}
-            onPointerUp={() => { setTouchingTour(false); holdAutoplay(); }}
-            onPointerCancel={() => { setTouchingTour(false); holdAutoplay(); }}
-            onLostPointerCapture={() => { setTouchingTour(false); holdAutoplay(); }}
-            onTouchEnd={() => { setTouchingTour(false); holdAutoplay(); }}
             onKeyDown={(event) => {
-              holdAutoplay();
-              if (event.key === "ArrowLeft") paginate(-1);
-              if (event.key === "ArrowRight") paginate(1);
+              if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+              event.preventDefault();
+              paginate(event.key === "ArrowLeft" ? -1 : 1);
             }}
             className="mx-auto max-w-7xl rounded-[1.5rem] border border-cyan-200/[0.16] bg-[#071c32]/95 p-3 shadow-[0_30px_80px_rgba(0,0,0,0.42),0_0_54px_rgba(0,239,255,0.07),inset_0_1px_0_rgba(255,255,255,0.045)] outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A192F] sm:p-5 lg:p-6"
           >
-            <div className="mb-4 flex snap-x snap-mandatory gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden min-[900px]:grid min-[900px]:grid-cols-5 min-[900px]:gap-1.5 min-[900px]:overflow-visible min-[900px]:pb-0 xl:gap-2">
+            <div className="mb-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
               {slides.map((slide, index) => (
-                <button key={slide.label} type="button" onClick={() => selectWithInteraction(index)} aria-current={activeIndex === index ? "true" : undefined} className={`min-h-11 min-w-[132px] snap-start rounded-lg border px-3 py-2 text-[10px] font-extrabold uppercase tracking-[0.07em] transition-[border-color,background-color,color,box-shadow] duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/70 motion-reduce:transition-none min-[900px]:min-w-0 min-[900px]:px-2 min-[900px]:text-[clamp(0.58rem,0.82vw,0.75rem)] xl:px-3 ${activeIndex === index ? "border-cyan-300/45 bg-cyan-300/[0.1] text-cyan-100 shadow-[inset_0_1px_0_rgba(165,243,252,0.08),0_0_18px_rgba(0,239,255,0.06)]" : "border-white/[0.06] bg-[#0d2944]/70 text-white/55 hover:border-cyan-300/20 hover:text-white/85"}`}>{String(index + 1).padStart(2, "0")} · {slide.label}</button>
+                <button key={slide.label} type="button" onClick={() => selectSlide(index)} aria-current={activeIndex === index ? "true" : undefined} className={`min-h-11 min-w-0 rounded-lg border px-2 py-2 text-[10px] font-extrabold uppercase tracking-[0.07em] transition-[border-color,background-color,color,box-shadow] duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/70 motion-reduce:transition-none lg:text-xs ${activeIndex === index ? "border-cyan-300/45 bg-cyan-300/[0.1] text-cyan-100 shadow-[inset_0_1px_0_rgba(165,243,252,0.08),0_0_18px_rgba(0,239,255,0.06)]" : "border-white/[0.06] bg-[#0d2944]/70 text-white/70 hover:border-cyan-300/20 hover:text-white"}`}>{slide.label}</button>
               ))}
             </div>
 
-            <div className={`relative overflow-hidden rounded-2xl border border-cyan-200/[0.12] bg-[#06172b] sm:px-14 lg:px-16 ${activeSlide.portrait ? "px-5" : "px-11"}`}>
-              <AnimatePresence initial={false} custom={direction} mode="popLayout">
-                <motion.article
-                  key={activeIndex}
-                  custom={direction}
-                  variants={slideVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{ duration: reduced ? 0.08 : 0.36, ease: [0.22, 1, 0.36, 1] }}
-                  drag={reduced ? false : "x"}
-                  dragConstraints={{ left: 0, right: 0 }}
-                  dragElastic={0.12}
-                  onDragEnd={(_, info) => { const swipe = Math.abs(info.offset.x) > 65 || Math.abs(info.velocity.x) > 520; holdAutoplay(); if (swipe) paginate(info.offset.x < 0 ? 1 : -1); }}
-                  className="grid min-w-0 cursor-grab select-none min-[900px]:grid-cols-[minmax(250px,0.5625fr)_minmax(0,1fr)] min-[900px]:items-center min-[900px]:gap-5 xl:gap-8 active:cursor-grabbing"
-                >
-                  <div className={`relative flex min-w-0 items-center justify-center overflow-hidden border-b border-cyan-200/[0.1] bg-[radial-gradient(circle_at_50%_45%,rgba(0,239,255,0.075),transparent_58%)] sm:min-h-[410px] sm:py-9 min-[900px]:order-2 min-[900px]:min-h-0 min-[900px]:border-b-0 min-[900px]:py-8 ${activeSlide.portrait ? "min-h-0 py-3" : "min-h-[250px] py-7"}`}>
-                    <div aria-hidden="true" className="absolute inset-x-[12%] top-0 h-px bg-gradient-to-r from-transparent via-cyan-200/55 to-transparent" />
-                    <div
-                      style={{ aspectRatio: activeSlide.aspectRatio }}
-                      className={`relative mx-auto border border-cyan-200/30 bg-[linear-gradient(145deg,#152b3d,#030911)] shadow-[0_24px_60px_rgba(0,0,0,0.52),0_0_34px_rgba(0,239,255,0.1),inset_0_1px_0_rgba(255,255,255,0.12)] sm:rounded-[1.15rem] sm:p-1.5 ${activeSlide.portrait ? "h-auto w-full max-w-full rounded-xl p-[3px] sm:h-[clamp(360px,58vh,480px)] sm:w-auto" : "w-full max-w-[620px] rounded-[1rem] p-[5px]"}`}
-                    >
-                      <span aria-hidden="true" className="absolute left-1/2 top-[2px] z-10 h-1 w-1 -translate-x-1/2 rounded-full bg-white/25" />
-                      <div className="h-full w-full overflow-hidden rounded-[0.72rem] bg-[#031324] sm:rounded-[0.85rem]">
-                        <img src={activeSlide.image} alt={activeSlide.alt} draggable={false} className={activeSlide.portrait ? "h-auto w-full object-contain sm:h-full" : "h-full w-full object-contain"} />
+            <div className="relative overflow-hidden rounded-2xl border border-cyan-200/[0.12] bg-[#06172b] min-[900px]:px-16">
+              <div
+                className="touch-pan-y"
+                onTouchStart={(event) => {
+                  const touch = event.touches[0];
+                  touchStart.current = event.touches.length === 1 ? { x: touch.clientX, y: touch.clientY } : null;
+                }}
+                onTouchCancel={() => { touchStart.current = null; }}
+                onTouchEnd={(event) => {
+                  const start = touchStart.current;
+                  touchStart.current = null;
+                  if (!start) return;
+                  const touch = event.changedTouches[0];
+                  const dx = touch.clientX - start.x;
+                  const dy = touch.clientY - start.y;
+                  if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)) paginate(dx < 0 ? 1 : -1);
+                }}
+              >
+                <AnimatePresence initial={false}>
+                  <motion.article
+                    key={activeIndex}
+                    initial={reduced ? false : { opacity: 0.55 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: reduced ? 0 : 0.3, ease: "easeOut" }}
+                    className="grid min-w-0 min-[900px]:grid-cols-[minmax(250px,0.85fr)_minmax(0,1.15fr)] min-[900px]:items-center min-[900px]:gap-6"
+                  >
+                    <div className="flex min-w-0 items-center justify-center bg-[radial-gradient(ellipse_at_center,rgba(0,239,255,0.075),transparent_68%)] px-2 pt-2 min-[900px]:order-2 min-[900px]:p-4">
+                      <img src={activeSlide.image} alt={`Tablet com a tela de ${activeSlide.label}`} width={1122} height={1402} loading="lazy" decoding="async" draggable={false} className="h-auto w-full max-w-[440px] select-none object-contain" />
+                    </div>
+
+                    <div className="min-w-0 px-4 pb-4 pt-3 sm:px-6 min-[900px]:order-1 min-[900px]:px-0 min-[900px]:py-8">
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="text-[10px] font-extrabold uppercase tracking-[0.15em] text-cyan-300/85 sm:text-xs">{activeSlide.label}</span>
+                        <span className="shrink-0 text-sm font-bold tabular-nums text-white/60"><span className="text-cyan-300">{String(activeIndex + 1).padStart(2, "0")}</span> / {String(slides.length).padStart(2, "0")}</span>
                       </div>
+                      <h3 className="mt-3 text-xl font-extrabold leading-tight tracking-tight text-white sm:text-3xl">{activeSlide.title}</h3>
+                      <p className="mt-2 text-sm leading-relaxed text-white/75 sm:mt-4 sm:text-base">{activeSlide.description}</p>
                     </div>
-                  </div>
+                  </motion.article>
+                </AnimatePresence>
+              </div>
 
-                  <div className="flex min-h-[250px] min-w-0 flex-col justify-center py-7 sm:min-h-[280px] sm:py-9 min-[900px]:order-1 min-[900px]:min-h-0 min-[900px]:py-8 min-[900px]:pl-3 xl:py-10 xl:pl-5">
-                    <div>
-                      <div className="flex items-center justify-between gap-4"><span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-cyan-300/85 sm:text-xs">{activeSlide.eyebrow}</span><span className="shrink-0 text-sm font-bold tabular-nums text-white/50"><span className="text-cyan-300">{String(activeIndex + 1).padStart(2, "0")}</span> / 05</span></div>
-                      <h3 className="mt-5 text-2xl font-extrabold leading-tight tracking-tight text-white sm:text-3xl">{activeSlide.title}</h3>
-                      <p className="mt-4 text-sm leading-relaxed text-white/75 sm:text-base">{activeSlide.description}</p>
-                    </div>
-                  </div>
-                </motion.article>
-              </AnimatePresence>
-
-              <button type="button" onClick={() => paginateWithInteraction(-1)} aria-label="Slide anterior" className="absolute left-1 top-[29%] z-20 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-cyan-300/35 bg-[#071c32]/95 text-cyan-100 shadow-[0_10px_24px_rgba(0,0,0,0.35)] transition-[border-color,background-color,transform] duration-300 hover:border-cyan-200/65 hover:bg-[#0d2944] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/80 motion-reduce:transition-none sm:left-2 sm:top-[36%] min-[900px]:top-1/2"><ArrowLeft className="h-5 w-5" aria-hidden="true" /></button>
-              <button type="button" onClick={() => paginateWithInteraction(1)} aria-label="Próximo slide" className="absolute right-1 top-[29%] z-20 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-cyan-300/35 bg-[#071c32]/95 text-cyan-100 shadow-[0_10px_24px_rgba(0,0,0,0.35)] transition-[border-color,background-color,transform] duration-300 hover:border-cyan-200/65 hover:bg-[#0d2944] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/80 motion-reduce:transition-none sm:right-2 sm:top-[36%] min-[900px]:top-1/2"><ArrowRight className="h-5 w-5" aria-hidden="true" /></button>
-
-              <div className="flex items-center gap-2 border-t border-cyan-200/[0.09] py-3 sm:py-4" aria-label={`Slide ${activeIndex + 1} de 5`}>
-                {slides.map((slide, index) => (
-                  <button key={slide.label} type="button" onClick={() => selectWithInteraction(index)} aria-label={`Ir para ${slide.label}`} aria-current={activeIndex === index ? "true" : undefined} className="flex h-11 flex-1 items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/70"><span className={`h-1.5 w-full rounded-full transition-[background-color,box-shadow] duration-300 motion-reduce:transition-none ${activeIndex === index ? "bg-cyan-300 shadow-[0_0_10px_rgba(0,239,255,0.55)]" : "bg-white/15"}`} /></button>
-                ))}
+              <div className="flex items-center gap-3 border-t border-cyan-200/[0.09] px-3 py-1 sm:px-4 min-[900px]:px-0">
+                <button type="button" onClick={() => paginate(-1)} aria-label="Slide anterior" className={`${arrowClassName} min-[900px]:left-2`}><ArrowLeft className="h-5 w-5" aria-hidden="true" /></button>
+                <div className="flex flex-1 items-center gap-2" aria-label={`Slide ${activeIndex + 1} de ${slides.length}`}>
+                  {slides.map((slide, index) => (
+                    <button key={slide.label} type="button" onClick={() => selectSlide(index)} aria-label={`Ir para ${slide.label}`} aria-current={activeIndex === index ? "true" : undefined} className="flex h-11 flex-1 items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/70"><span className={`h-1.5 w-full rounded-full transition-[background-color,box-shadow] duration-300 motion-reduce:transition-none ${activeIndex === index ? "bg-cyan-300 shadow-[0_0_10px_rgba(0,239,255,0.55)]" : "bg-white/15"}`} /></button>
+                  ))}
+                </div>
+                <button type="button" onClick={() => paginate(1)} aria-label="Próximo slide" className={`${arrowClassName} min-[900px]:right-2`}><ArrowRight className="h-5 w-5" aria-hidden="true" /></button>
               </div>
             </div>
 
-            <p className="sr-only" aria-live="polite">Slide {activeIndex + 1} de 5: {activeSlide.label}</p>
+            <p className="sr-only" aria-live={reduced || interaction > 0 ? "polite" : "off"}>Slide {activeIndex + 1} de {slides.length}: {activeSlide.label}</p>
           </motion.div>
         </div>
       </section>
