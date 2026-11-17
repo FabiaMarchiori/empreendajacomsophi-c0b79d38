@@ -317,13 +317,25 @@ export const HeroImportersPanel = ({ scrollProgress }: { scrollProgress: MotionV
 const benefits = ["Fornecedores verificados", "Acesso imediato", "7 dias de garantia"];
 
 const HeroSection = () => (
-  <section id="inicio" className="campaign-hero relative isolate overflow-hidden bg-[#061423] pb-[calc(min(54.667vw,19.133rem)+0.5rem)] lg:pb-0">
-    <div className="relative z-10 mx-auto w-full max-w-[1440px] px-5 pt-9 sm:px-8 sm:pt-12 lg:flex lg:min-h-[max(26rem,33.333vw)] lg:items-center lg:py-12 xl:px-12">
+  <section id="inicio" className="campaign-hero relative isolate overflow-hidden bg-[#061423]">
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 bg-no-repeat [background-position:right_-2.75rem_center] [background-size:auto_64%] max-lg:[mask-image:linear-gradient(to_bottom,transparent_18%,black_28%,black_72%,transparent_82%)] top-[var(--navigation-height)] lg:bg-contain lg:bg-right"
+      style={{ backgroundImage: `url("${heroTablet}")` }}
+    />
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 lg:hidden"
+      style={{
+        background: "linear-gradient(180deg,#061423,transparent 23%,transparent 72%,#061423), linear-gradient(90deg,#061423 5%,rgba(6,20,35,.98) 43%,rgba(6,20,35,.83) 76%,rgba(6,20,35,.18))",
+      }}
+    />
+    <div className="relative z-10 mx-auto w-full max-w-[1440px] px-5 py-9 sm:px-8 sm:py-12 lg:flex lg:min-h-[max(26rem,33.333vw)] lg:items-center lg:py-12 xl:px-12">
       <div className="max-w-xl lg:w-[46%]">
         <h1 className="max-w-[15ch] text-4xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-5xl xl:text-6xl">
           Seu próximo <span className="text-cyan-300">fornecedor</span> pode estar aqui.
         </h1>
-        <p className="mt-5 max-w-lg text-base leading-relaxed text-slate-200 sm:text-lg">
+        <p className="mt-5 max-w-[32ch] text-base lg:max-w-lg leading-relaxed text-slate-200 sm:text-lg">
           Encontre importadoras e fornecedores da 25 de Março de forma mais rápida, organizada e segura.
         </p>
         <a
@@ -342,15 +354,6 @@ const HeroSection = () => (
           ))}
         </ul>
       </div>
-    </div>
-    <div className="pointer-events-none absolute inset-x-0 bottom-0 mx-auto flex max-w-[560px] justify-end overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_8%,black_92%,transparent)] sm:[mask-image:linear-gradient(to_bottom,transparent,black_8%,black_92%,transparent),linear-gradient(to_right,transparent,black_12%,black_99%,transparent)] sm:[mask-composite:intersect] lg:top-[var(--navigation-height)] lg:max-w-none lg:[mask-image:none]">
-      <img
-        src={heroTablet}
-        alt="Tablet com a tela inicial do EmpreendaJá com Soph"
-        width={2172}
-        height={724}
-        className="h-auto w-[164%] max-w-none shrink-0 lg:h-full lg:w-full lg:object-contain lg:object-right"
-      />
     </div>
   </section>
 );

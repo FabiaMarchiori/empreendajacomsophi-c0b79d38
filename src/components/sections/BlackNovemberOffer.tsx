@@ -7,13 +7,25 @@ import { BLACK_NOVEMBER, formatCampaignPrice } from "@/lib/black-november";
 const campaignDeadline = BLACK_NOVEMBER.validUntil.split("-").reverse().join("/");
 
 const BlackNovemberOffer = () => (
-  <section aria-labelledby="black-friday-title" className="relative isolate overflow-hidden border-t border-cyan-300/15 bg-[#031522] pb-[calc(min(54.667vw,19.133rem)+0.5rem)] lg:pb-0">
-    <div className="relative z-10 mx-auto w-full max-w-[1440px] px-5 pt-10 sm:px-8 sm:pt-12 lg:flex lg:min-h-[max(31rem,33.333vw)] lg:items-center lg:py-10 xl:px-12">
+  <section aria-labelledby="black-friday-title" className="relative isolate overflow-hidden border-t border-cyan-300/15 bg-[#031522]">
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 bg-no-repeat [background-position:right_-2.75rem_center] [background-size:auto_64%] max-lg:[mask-image:linear-gradient(to_bottom,transparent_18%,black_28%,black_72%,transparent_82%)] lg:bg-contain xl:bg-cover lg:bg-right"
+      style={{ backgroundImage: `url("${campaignGifts}")` }}
+    />
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 lg:hidden"
+      style={{
+        background: "linear-gradient(180deg,#031522,transparent 23%,transparent 72%,#031522), linear-gradient(90deg,#031522 5%,rgba(3,21,34,.98) 43%,rgba(3,21,34,.83) 76%,rgba(3,21,34,.18))",
+      }}
+    />
+    <div className="relative z-10 mx-auto w-full max-w-[1440px] px-5 py-10 sm:px-8 sm:py-12 lg:flex lg:min-h-[max(31rem,33.333vw)] lg:items-center lg:py-10 xl:px-12">
       <div className="max-w-xl lg:w-[46%]">
         <h2 id="black-friday-title" className="max-w-[18ch] text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl xl:text-5xl">
           Seu ano de oportunidades <span className="text-cyan-300">começa agora.</span>
         </h2>
-        <p className="mt-4 max-w-lg text-base leading-relaxed text-slate-200 sm:text-lg">
+        <p className="mt-4 max-w-[32ch] text-base lg:max-w-lg leading-relaxed text-slate-200 sm:text-lg">
           Entre na plataforma com a oferta de Black Friday e tenha acesso a fornecedores, categorias e ferramentas para comprar melhor.
         </p>
         <div className="mt-6">
@@ -38,16 +50,6 @@ const BlackNovemberOffer = () => (
         </Button>
         <p className="mt-3 text-xs text-slate-300">Oferta válida até {campaignDeadline}.</p>
       </div>
-    </div>
-    <div className="pointer-events-none absolute inset-x-0 bottom-0 mx-auto flex max-w-[560px] justify-end overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_8%,black_92%,transparent)] sm:[mask-image:linear-gradient(to_bottom,transparent,black_8%,black_92%,transparent),linear-gradient(to_right,transparent,black_12%,black_99%,transparent)] sm:[mask-composite:intersect] lg:top-0 lg:max-w-none lg:[mask-image:none]">
-      <img
-        src={campaignGifts}
-        alt="Sacolas e presentes com os dizeres Fornecedores da 25 de Março e Black Friday"
-        width={2172}
-        height={724}
-        loading="lazy"
-        className="h-auto w-[164%] max-w-none shrink-0 lg:h-full lg:w-full lg:object-contain lg:object-right xl:object-cover"
-      />
     </div>
   </section>
 );
