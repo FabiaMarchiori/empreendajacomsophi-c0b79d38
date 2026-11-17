@@ -3,6 +3,7 @@ import { cleanup, render, screen } from "@testing-library/react";
 import { BLACK_NOVEMBER } from "@/lib/black-november";
 import PricingSection from "@/components/sections/PricingSection";
 import BlackNovemberOffer from "@/components/sections/BlackNovemberOffer";
+import HeroSection from "@/components/sections/HeroSection";
 import FinalCTASection from "@/components/sections/FinalCTASection";
 
 vi.mock("framer-motion", async () => {
@@ -35,9 +36,13 @@ describe("Black November commercial rules", () => {
     render(<PricingSection />);
     expect(screen.getByRole("link", { name: "Assinar Plano Anual" }).getAttribute("href")).toBe("https://pay.kiwify.com.br/cYf0nTs");
   });
-  it("uses the official campaign checkout in the Hero", () => {
+  it("takes the Hero CTA to the plans", () => {
+    render(<HeroSection />);
+    expect(screen.getByRole("link", { name: "QUERO ACESSAR OS FORNECEDORES" })).toHaveAttribute("href", "#planos");
+  });
+  it("uses the official checkout in the standalone campaign offer", () => {
     render(<BlackNovemberOffer />);
-    expect(screen.getByRole("link", { name: "QUERO APROVEITAR A OFERTA" }).getAttribute("href")).toBe("https://pay.kiwify.com.br/cYf0nTs");
+    expect(screen.getByRole("link", { name: "GARANTIR MINHA VAGA" }).getAttribute("href")).toBe("https://pay.kiwify.com.br/cYf0nTs");
   });
   it("takes the final campaign CTA to the plans", () => {
     render(<FinalCTASection />);

@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/sections/HeroSection";
+import BlackNovemberOffer from "@/components/sections/BlackNovemberOffer";
 import PainSection from "@/components/sections/PainSection";
 import ModulesSection from "@/components/sections/ModulesSection";
 import TestimonialsSection from "@/components/sections/TestimonialsSection";
@@ -15,6 +16,7 @@ const Index = () => (
     <main className="overflow-x-hidden">
       <Navbar />
       <HeroSection />
+      <BlackNovemberOffer />
       <PainSection />
       <ModulesSection />
       <TestimonialsSection />
