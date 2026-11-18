@@ -66,7 +66,6 @@
   background: hsl(var(--campaign));
   color: hsl(var(--campaign-foreground));
 }
-
 .campaign-ribbon-track {
   display: flex;
   width: max-content;
@@ -87,10 +86,6 @@
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0;
-}
-@media (max-width: 639px) {
-  :root { --campaign-ribbon-height: 14px; }
-  .campaign-ribbon-group span { font-size: 9px; }
 }
 .campaign-ribbon-group span::after { content: "✦"; }
 @keyframes campaign-marquee { to { transform: translateX(-50%); } }
