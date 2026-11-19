@@ -17,6 +17,17 @@ const features = [
 const PricingSection = () => {
   const reduced = useReducedMotion();
 
+  const planEntrance = (delay: number) => ({
+    initial: reduced ? false as const : { opacity: 0.5, transform: "translateY(15px)" },
+    whileInView: { opacity: 1, transform: "translateY(0px)" },
+    viewport: { once: true, amount: 0.27 },
+    transition: {
+      duration: reduced ? 0 : 0.5,
+      delay: reduced ? 0 : delay,
+      ease: [0.22, 0.61, 0.36, 1] as [number, number, number, number],
+    },
+  });
+
   return (
     <section id="planos" className="relative overflow-hidden bg-[#0A192F] py-20 md:py-24">
       <div className="pointer-events-none absolute left-1/2 top-0 h-[400px] w-[800px] -translate-x-1/2 rounded-full bg-cyan-500/5 blur-[150px]" />
@@ -37,8 +48,9 @@ const PricingSection = () => {
         </motion.header>
 
         <div className="mx-auto grid max-w-4xl items-stretch gap-8 md:grid-cols-2">
-          <article
-            className="card-premium flex flex-col p-6 transition-[transform,border-color] duration-200 motion-reduce:transition-none [@media(hover:hover)_and_(pointer:fine)]:motion-safe:hover:-translate-y-0.5 [@media(hover:hover)_and_(pointer:fine)]:hover:border-cyan-300/25 sm:p-8"
+          <motion.article
+            {...planEntrance(0)}
+            className="card-premium flex flex-col p-6 transition-[translate,border-color] duration-200 motion-reduce:transition-none [@media(hover:hover)_and_(pointer:fine)]:motion-safe:hover:[translate:0_-2px] [@media(hover:hover)_and_(pointer:fine)]:hover:border-cyan-300/25 sm:p-8"
           >
             <header className="mb-6">
               <h3 className="mb-1.5 text-xl font-bold text-white">Plano Mensal</h3>
@@ -78,10 +90,11 @@ const PricingSection = () => {
               Assinar Mensal
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </a>
-          </article>
+          </motion.article>
 
-          <article
-            className="campaign-plan relative flex flex-col p-6 transition-[transform,border-color] duration-200 motion-reduce:transition-none [@media(hover:hover)_and_(pointer:fine)]:motion-safe:hover:-translate-y-0.5 sm:p-8"
+          <motion.article
+            {...planEntrance(0.1)}
+            className="campaign-plan relative flex flex-col p-6 transition-[translate,border-color] duration-200 motion-reduce:transition-none [@media(hover:hover)_and_(pointer:fine)]:motion-safe:hover:[translate:0_-2px] sm:p-8"
           >
             <div className="absolute -top-5 left-1/2 flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full bg-campaign px-6 py-2 text-sm font-extrabold tracking-wide text-campaign-foreground ring-4 ring-campaign/15 sm:text-base">
               <Sparkles aria-hidden="true" className="sales-plan-sparkle h-4 w-4" />
@@ -129,7 +142,7 @@ const PricingSection = () => {
                 <ArrowRight aria-hidden="true" className="h-5 w-5" />
               </a>
             </Button>
-          </article>
+          </motion.article>
         </div>
 
         <motion.ul

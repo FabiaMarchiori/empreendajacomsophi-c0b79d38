@@ -73,10 +73,10 @@ const PainSection = () => {
           {pains.map((pain, i) => (
             <motion.div
               key={pain.label}
-              initial={reduced ? false : { opacity: 0.9, y: 6 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={reduced ? false : { opacity: 0.42, transform: "translateY(16px)" }}
+              whileInView={{ opacity: 1, transform: "translateY(0px)" }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.24, delay: reduced ? 0 : i * 0.03, ease: [0.23, 1, 0.32, 1] }}
+              transition={{ duration: 0.46, delay: reduced ? 0 : i * 0.1, ease: [0.22, 0.61, 0.36, 1] }}
               className={`group relative flex min-h-[132px] items-start gap-4 overflow-hidden rounded-2xl border border-cyan-200/[0.14] p-5 shadow-[0_14px_38px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.035)] sm:min-h-[140px] sm:gap-5 sm:p-6 ${pain.surface}`}
             >
               <div

@@ -243,9 +243,9 @@ const ModulesSection = () => {
             >
               <motion.article
                 key={activeIndex}
-                initial={reduced || instant ? false : { opacity: 0.84 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: reduced || instant ? 0 : 0.22, ease: [0.23, 1, 0.32, 1] }}
+                initial={reduced || instant ? false : { opacity: 0.48, transform: "translateY(10px)" }}
+                animate={{ opacity: 1, transform: "translateY(0px)" }}
+                transition={{ duration: reduced || instant ? 0 : 0.4, ease: [0.22, 0.61, 0.36, 1] }}
                 className="grid min-w-0 min-[900px]:grid-cols-[minmax(250px,0.85fr)_minmax(0,1.15fr)] min-[900px]:items-center min-[900px]:gap-6"
               >
                 <div className="flex min-w-0 items-center justify-center bg-[radial-gradient(ellipse_at_center,rgba(0,239,255,0.075),transparent_68%)] px-2 pt-2 min-[900px]:order-2 min-[900px]:p-4">
