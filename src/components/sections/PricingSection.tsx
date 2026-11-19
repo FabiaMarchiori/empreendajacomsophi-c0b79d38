@@ -17,22 +17,15 @@ const features = [
 const PricingSection = () => {
   const reduced = useReducedMotion();
 
-  const entrance = (x: number, delay = 0) => ({
-    initial: reduced ? { opacity: 0 } : { opacity: 0, x },
-    whileInView: reduced ? { opacity: 1 } : { opacity: 1, x: 0 },
-    viewport: { once: true, amount: 0.25 },
-    transition: { duration: reduced ? 0.01 : 0.55, delay: reduced ? 0 : delay, ease: "easeOut" as const },
-  });
-
   return (
     <section id="planos" className="relative overflow-hidden bg-[#0A192F] py-20 md:py-24">
       <div className="pointer-events-none absolute left-1/2 top-0 h-[400px] w-[800px] -translate-x-1/2 rounded-full bg-cyan-500/5 blur-[150px]" />
       <div className="container relative z-10 mx-auto px-4">
         <motion.header
-          initial={reduced ? { opacity: 0 } : { opacity: 0, y: 24 }}
+          initial={reduced ? false : { opacity: 0.94, y: 6 }}
           whileInView={reduced ? { opacity: 1 } : { opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.45 }}
-          transition={{ duration: reduced ? 0.01 : 0.55, ease: "easeOut" }}
+          transition={{ duration: reduced ? 0.01 : 0.24, ease: "easeOut" }}
           className="mx-auto mb-12 max-w-3xl text-center md:mb-14"
         >
           <span className="mb-5 inline-block rounded-full bg-cyan-500/10 px-4 py-1.5 text-sm font-bold tracking-wide text-white">
@@ -44,9 +37,8 @@ const PricingSection = () => {
         </motion.header>
 
         <div className="mx-auto grid max-w-4xl items-stretch gap-8 md:grid-cols-2">
-          <motion.article
-            {...entrance(-24)}
-            className="card-premium flex flex-col p-6 transition-[transform,border-color] duration-300 [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-0.5 [@media(hover:hover)_and_(pointer:fine)]:hover:border-cyan-300/25 sm:p-8"
+          <article
+            className="card-premium flex flex-col p-6 transition-[transform,border-color] duration-200 motion-reduce:transition-none [@media(hover:hover)_and_(pointer:fine)]:motion-safe:hover:-translate-y-0.5 [@media(hover:hover)_and_(pointer:fine)]:hover:border-cyan-300/25 sm:p-8"
           >
             <header className="mb-6">
               <h3 className="mb-1.5 text-xl font-bold text-white">Plano Mensal</h3>
@@ -81,19 +73,18 @@ const PricingSection = () => {
               href="https://pay.kiwify.com.br/gNROnVP"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-secondary-dark inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-xl px-5 py-4 text-center font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A192F]"
+              className="btn-secondary-dark sales-press inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-xl px-5 py-4 text-center font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A192F]"
             >
               Assinar Mensal
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </a>
-          </motion.article>
+          </article>
 
-          <motion.article
-            {...entrance(24, 0.06)}
-            className="campaign-plan relative flex flex-col p-6 transition-[transform,border-color] duration-300 [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-0.5 sm:p-8"
+          <article
+            className="campaign-plan relative flex flex-col p-6 transition-[transform,border-color] duration-200 motion-reduce:transition-none [@media(hover:hover)_and_(pointer:fine)]:motion-safe:hover:-translate-y-0.5 sm:p-8"
           >
             <div className="absolute -top-5 left-1/2 flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full bg-campaign px-6 py-2 text-sm font-extrabold tracking-wide text-campaign-foreground ring-4 ring-campaign/15 sm:text-base">
-              <Sparkles aria-hidden="true" className="h-4 w-4" />
+              <Sparkles aria-hidden="true" className="sales-plan-sparkle h-4 w-4" />
               BLACK FRIDAY
             </div>
 
@@ -132,20 +123,20 @@ const PricingSection = () => {
               </li>
             </ul>
 
-            <Button asChild variant="campaign" className="min-h-14 w-full whitespace-normal rounded-xl px-5 py-4 text-center text-lg font-extrabold">
+            <Button asChild variant="campaign" className="sales-press min-h-14 w-full whitespace-normal rounded-xl px-5 py-4 text-center text-lg font-extrabold">
               <a href={BLACK_NOVEMBER.checkout} target="_blank" rel="noopener noreferrer">
                 Assinar Plano Anual
                 <ArrowRight aria-hidden="true" className="h-5 w-5" />
               </a>
             </Button>
-          </motion.article>
+          </article>
         </div>
 
         <motion.ul
-          initial={reduced ? { opacity: 0 } : { opacity: 0, y: 12 }}
+          initial={reduced ? false : { opacity: 0.94, y: 5 }}
           whileInView={reduced ? { opacity: 1 } : { opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.6 }}
-          transition={{ duration: reduced ? 0.01 : 0.45, delay: reduced ? 0 : 0.12 }}
+          transition={{ duration: reduced ? 0.01 : 0.24, delay: reduced ? 0 : 0.03 }}
           className="mx-auto mt-8 flex max-w-3xl flex-wrap items-center justify-center gap-x-7 gap-y-3 rounded-xl border border-cyan-300/12 bg-white/[0.03] px-5 py-3.5 text-center"
         >
           {[
@@ -164,10 +155,10 @@ const PricingSection = () => {
         </motion.ul>
 
         <motion.div
-          initial={reduced ? { opacity: 0 } : { opacity: 0, y: 16 }}
+          initial={reduced ? false : { opacity: 0.94, y: 5 }}
           whileInView={reduced ? { opacity: 1 } : { opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: reduced ? 0.01 : 0.45, delay: reduced ? 0 : 0.18 }}
+          transition={{ duration: reduced ? 0.01 : 0.24, delay: reduced ? 0 : 0.06 }}
           className="mt-10 text-center"
         >
           <a

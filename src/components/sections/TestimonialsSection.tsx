@@ -62,15 +62,6 @@ const TestimonialsSection = () => {
     const root = carouselRegionRef.current;
     if (!root) return;
 
-    let frame = 0;
-    let previousTime = performance.now();
-    let previousIndex = api.selectedScrollSnap();
-    let engine = api.internalEngine();
-
-    const updateEngine = () => {
-      engine = api.internalEngine();
-      previousIndex = api.selectedScrollSnap();
-    };
     const handlePointerDown = () => pause("drag");
     const handlePointerUp = () => resume("drag", 2200);
     const handleVisibility = () => {
@@ -89,56 +80,19 @@ const TestimonialsSection = () => {
     handleVisibility();
     api.on("pointerDown", handlePointerDown);
     api.on("pointerUp", handlePointerUp);
-    api.on("reInit", updateEngine);
     document.addEventListener("visibilitychange", handleVisibility);
 
-    const tick = (time: number) => {
-      const elapsed = Math.min(time - previousTime, 32);
-      previousTime = time;
-
-      if (pauseReasonsRef.current.size === 0 && time >= resumeAfterRef.current && !engine.dragHandler.pointerDown()) {
-        engine.animation.stop();
-        const mobile = window.matchMedia("(max-width: 639px)").matches;
-        const distance = (mobile ? 0.88 : 1) * (elapsed / 16.667);
-
-        engine.location.add(-distance);
-        engine.target.set(engine.location);
-        engine.previousLocation.set(engine.location);
-        engine.offsetLocation.set(engine.location);
-        engine.scrollLooper.loop(-1);
-        engine.slideLooper.loop();
-        engine.translate.to(engine.location.get());
-        api.emit("scroll");
-
-        let closestIndex = 0;
-        let closestDistance = Number.POSITIVE_INFINITY;
-        engine.scrollSnaps.forEach((snap, index) => {
-          const snapDistance = Math.abs(snap - engine.location.get());
-          if (snapDistance < closestDistance) {
-            closestDistance = snapDistance;
-            closestIndex = index;
-          }
-        });
-
-        if (closestIndex !== previousIndex) {
-          engine.indexPrevious.set(previousIndex);
-          engine.index.set(closestIndex);
-          previousIndex = closestIndex;
-          api.emit("select");
-        }
+    const timer = window.setInterval(() => {
+      if (pauseReasonsRef.current.size === 0 && performance.now() >= resumeAfterRef.current) {
+        api.scrollNext();
       }
-
-      frame = requestAnimationFrame(tick);
-    };
-
-    frame = requestAnimationFrame(tick);
+    }, 8000);
 
     return () => {
-      cancelAnimationFrame(frame);
+      window.clearInterval(timer);
       observer.disconnect();
       api.off("pointerDown", handlePointerDown);
       api.off("pointerUp", handlePointerUp);
-      api.off("reInit", updateEngine);
       document.removeEventListener("visibilitychange", handleVisibility);
     };
   }, [api, pause, reduced, resume]);
@@ -148,10 +102,10 @@ const TestimonialsSection = () => {
       <div className="pointer-events-none absolute left-1/2 top-1/2 h-[520px] w-[760px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-500/[0.035] blur-[150px]" />
       <div className="container relative z-10 mx-auto px-4">
         <motion.header
-          initial={reduced ? { opacity: 0 } : { opacity: 0, y: 24 }}
+          initial={reduced ? false : { opacity: 0.94, y: 6 }}
           whileInView={reduced ? { opacity: 1 } : { opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: reduced ? 0.01 : 0.55, ease: "easeOut" }}
+          transition={{ duration: reduced ? 0.01 : 0.24, ease: "easeOut" }}
           className="mx-auto mb-12 max-w-3xl text-center md:mb-14"
         >
           <span className="mb-5 inline-block rounded-full bg-cyan-500/10 px-4 py-1.5 text-sm font-bold tracking-wide text-white">
@@ -167,10 +121,10 @@ const TestimonialsSection = () => {
 
         <motion.div
           ref={carouselRegionRef}
-          initial={reduced ? { opacity: 0 } : { opacity: 0, y: 20 }}
+          initial={reduced ? false : { opacity: 0.94, y: 5 }}
           whileInView={reduced ? { opacity: 1 } : { opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: reduced ? 0.01 : 0.5, ease: "easeOut" }}
+          transition={{ duration: reduced ? 0.01 : 0.24, ease: "easeOut" }}
           className="mx-auto max-w-6xl"
           onMouseEnter={() => pause("hover")}
           onMouseLeave={() => resume("hover", 900)}
@@ -179,11 +133,12 @@ const TestimonialsSection = () => {
             if (!event.currentTarget.contains(event.relatedTarget)) resume("focus", 1600);
           }}
           onTouchStart={() => pause("touch")}
+          onTouchCancel={() => resume("touch", 2400)}
           onTouchEnd={() => resume("touch", 2400)}
         >
           <Carousel
             setApi={setApi}
-            opts={{ align: "start", loop: true, dragFree: true, skipSnaps: false }}
+            opts={{ align: "start", loop: true, dragFree: true, skipSnaps: false, duration: 20, breakpoints: { "(prefers-reduced-motion: reduce)": { duration: 0, dragFree: false } } }}
             aria-label="Depoimentos de clientes"
             className="px-0 md:px-11"
           >
@@ -194,7 +149,7 @@ const TestimonialsSection = () => {
                   aria-label={(index + 1) + " de " + testimonials.length}
                   className="basis-[88%] pl-4 sm:basis-1/2 lg:basis-1/3"
                 >
-                  <article className="group relative flex h-full min-h-[19rem] flex-col overflow-hidden rounded-2xl border border-cyan-300/15 bg-[#0b2139]/90 p-6 shadow-[0_20px_48px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(103,232,249,0.1)] transition-[transform,border-color,box-shadow] duration-300 [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-0.5 [@media(hover:hover)_and_(pointer:fine)]:hover:border-cyan-300/30 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_24px_54px_rgba(0,0,0,0.34),0_0_28px_rgba(0,239,255,0.08),inset_0_1px_0_rgba(103,232,249,0.14)]">
+                  <article className="group relative flex h-full min-h-[19rem] flex-col overflow-hidden rounded-2xl border border-cyan-300/15 bg-[#0b2139]/90 p-6 shadow-[0_20px_48px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(103,232,249,0.1)] transition-[transform,border-color,box-shadow] duration-200 motion-reduce:transition-none [@media(hover:hover)_and_(pointer:fine)]:motion-safe:hover:-translate-y-0.5 [@media(hover:hover)_and_(pointer:fine)]:hover:border-cyan-300/30 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_24px_54px_rgba(0,0,0,0.34),0_0_28px_rgba(0,239,255,0.08),inset_0_1px_0_rgba(103,232,249,0.14)]">
                     <Quote aria-hidden="true" className="absolute right-5 top-5 h-8 w-8 text-cyan-300/15" />
                     <p className="relative z-10 mb-7 pr-6 leading-relaxed text-white">“{testimonial.text}”</p>
                     <footer className="mt-auto flex items-center gap-3 border-t border-white/[0.07] pt-5">
@@ -223,9 +178,9 @@ const TestimonialsSection = () => {
               <button
                 key={index}
                 type="button"
-                onClick={() => {
+                onClick={(event) => {
                   pause("control");
-                  api?.scrollTo(index);
+                  api?.scrollTo(index, !!reduced || event.detail === 0);
                   resume("control", 2600);
                 }}
                 aria-label={"Ir para o depoimento " + (index + 1)}
@@ -234,8 +189,8 @@ const TestimonialsSection = () => {
               >
                 <span
                   aria-hidden="true"
-                  className={"h-2 rounded-full transition-[width,background-color] duration-300 " + (
-                    index === current ? "w-6 bg-cyan-300" : "w-2 bg-white/25 group-hover:bg-white/40"
+                  className={"h-2 rounded-full transition-[transform,background-color] duration-200 motion-reduce:transition-none w-2 " + (
+                    index === current ? "scale-x-[3] bg-cyan-300" : "bg-white/25 group-hover:bg-white/40"
                   )}
                 />
               </button>

@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
@@ -77,16 +77,16 @@ const slides = [
 const autoplayDelay = 4000;
 const arrowClassName = "inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-cyan-300/35 bg-[#071c32] text-cyan-100 transition-colors duration-300 hover:border-cyan-200/65 hover:bg-[#0d2944] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/80 motion-reduce:transition-none min-[900px]:absolute min-[900px]:top-1/2 min-[900px]:-translate-y-1/2";
 
-const sectionReveal = (reduced: boolean, delay = 0, distance = 18) => ({
-  initial: reduced ? false : { opacity: 0, y: distance },
+const sectionReveal = (reduced: boolean, delay = 0, distance = 6) => ({
+  initial: reduced ? false : { opacity: 0.94, y: distance },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, amount: 0.25 },
-  transition: { duration: 0.5, delay: reduced ? 0 : delay, ease: "easeOut" as const },
+  transition: { duration: 0.24, delay: reduced ? 0 : delay, ease: [0.23, 1, 0.32, 1] as [number, number, number, number] },
 });
 
 export const BenefitsSection = () => {
   const reduced = !!useReducedMotion();
-  const reveal = (delay = 0, distance = 18) => sectionReveal(reduced, delay, distance);
+  const reveal = (delay = 0, distance = 6) => sectionReveal(reduced, delay, distance);
 
   return (
     <section className="relative overflow-hidden bg-deep pb-16 pt-10 md:pb-24 md:pt-16">
@@ -101,30 +101,26 @@ export const BenefitsSection = () => {
 
         <div className="mx-auto grid max-w-5xl gap-4 md:grid-cols-2">
           {pillars.map((pillar, index) => (
-            <motion.article
+            <article
               key={pillar.title}
-              {...reveal(0.08 + index * 0.07)}
-              variants={{ hover: { y: -3, borderColor: "rgba(103,232,249,0.34)", boxShadow: "0 22px 52px rgba(0,0,0,0.34), 0 0 26px rgba(0,239,255,0.08)" }, tap: { scale: 0.992 } }}
-              whileHover={reduced ? undefined : "hover"}
-              whileTap={reduced ? undefined : "tap"}
-              className={`group relative flex min-h-[144px] items-start gap-4 overflow-hidden rounded-2xl border p-5 shadow-[0_14px_38px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.04)] sm:gap-5 sm:p-6 ${index === 0 ? "border-cyan-200/[0.24]" : "border-cyan-200/[0.13]"} ${pillar.surface}`}
+              className={`sales-benefit group relative flex min-h-[144px] items-start gap-4 overflow-hidden rounded-2xl border p-5 shadow-[0_14px_38px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.04)] sm:gap-5 sm:p-6 ${index === 0 ? "border-cyan-200/[0.24]" : "border-cyan-200/[0.13]"} ${pillar.surface}`}
             >
               <div aria-hidden="true" className={`pointer-events-none absolute top-0 h-px bg-gradient-to-r from-transparent via-cyan-200/65 to-transparent opacity-70 ${pillar.accent}`} />
               <div className="relative flex h-14 w-14 shrink-0 items-center justify-center sm:h-16 sm:w-16">
-                <motion.div variants={{ hover: { scale: 1.04, rotate: index % 2 === 0 ? -2 : 2 } }} className="grid h-full w-full place-items-center">
+                <div className="sales-benefit-icon grid h-full w-full place-items-center">
                   <img src={pillar.icon} alt="" loading="lazy" className="h-full w-full object-contain" />
-                </motion.div>
+                </div>
               </div>
               <div className="min-w-0 pt-0.5">
                 <div className="mb-2 flex items-center gap-2"><span className="text-[10px] font-extrabold tracking-[0.18em] text-cyan-300/75">{pillar.number}</span><span aria-hidden="true" className="h-px w-6 bg-cyan-300/20" /></div>
                 <h3 className="text-sm font-extrabold uppercase leading-snug tracking-[0.1em] text-white sm:text-base">{pillar.title}</h3>
                 <p className="mt-2 text-pretty text-sm leading-relaxed text-white sm:text-base">{pillar.description}</p>
               </div>
-            </motion.article>
+            </article>
           ))}
         </div>
 
-        <motion.p {...reveal(0.22, 12)} className="mx-auto mt-12 max-w-3xl text-balance text-center text-base font-bold leading-relaxed text-white sm:text-lg"><span className="text-cyan-300">Fornecedores</span> para encontrar. Ferramentas para administrar. Soph para acompanhar.</motion.p>
+        <motion.p {...reveal(0.06)} className="mx-auto mt-12 max-w-3xl text-balance text-center text-base font-bold leading-relaxed text-white sm:text-lg"><span className="text-cyan-300">Fornecedores</span> para encontrar. Ferramentas para administrar. Soph para acompanhar.</motion.p>
       </div>
     </section>
   );
@@ -135,19 +131,22 @@ const ModulesSection = () => {
   const [tourInView, setTourInView] = useState(false);
   const [pageVisible, setPageVisible] = useState(() => typeof document === "undefined" || !document.hidden);
   const [pressedPointer, setPressedPointer] = useState<number | null>(null);
+  const [instant, setInstant] = useState(true);
   const [interaction, setInteraction] = useState(0);
   const tourRef = useRef<HTMLDivElement>(null);
   const touchStart = useRef<{ x: number; y: number } | null>(null);
   const reduced = !!useReducedMotion();
   const activeSlide = slides[activeIndex];
-  const reveal = (delay = 0, distance = 18) => sectionReveal(reduced, delay, distance);
+  const reveal = (delay = 0, distance = 6) => sectionReveal(reduced, delay, distance);
 
-  const paginate = (step: number) => {
+  const paginate = (step: number, instant = false) => {
+    setInstant(instant);
     setInteraction((count) => count + 1);
     setActiveIndex((current) => (current + step + slides.length) % slides.length);
   };
 
-  const selectSlide = (index: number) => {
+  const selectSlide = (index: number, instant: boolean) => {
+    setInstant(instant);
     setInteraction((count) => count + 1);
     setActiveIndex(index);
   };
@@ -184,6 +183,7 @@ const ModulesSection = () => {
     if (reduced || !tourInView || !pageVisible || pressedPointer !== null) return;
 
     const timer = window.setTimeout(() => {
+      setInstant(false);
       setActiveIndex((current) => (current + 1) % slides.length);
     }, autoplayDelay);
 
@@ -201,7 +201,7 @@ const ModulesSection = () => {
 
         <motion.div
           ref={tourRef}
-          {...reveal(0.08, 20)}
+          {...reveal()}
           role="region"
           aria-roledescription="carrossel"
           aria-label="Tour da plataforma EmpreendaJá"
@@ -213,13 +213,13 @@ const ModulesSection = () => {
           onKeyDown={(event) => {
             if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
             event.preventDefault();
-            paginate(event.key === "ArrowLeft" ? -1 : 1);
+            paginate(event.key === "ArrowLeft" ? -1 : 1, true);
           }}
           className="mx-auto max-w-7xl rounded-[1.5rem] border border-cyan-200/[0.16] bg-[#071c32]/95 p-3 shadow-[0_30px_80px_rgba(0,0,0,0.42),0_0_54px_rgba(0,239,255,0.07),inset_0_1px_0_rgba(255,255,255,0.045)] outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A192F] sm:p-5 lg:p-6"
         >
           <div className="mb-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
             {slides.map((slide, index) => (
-              <button key={slide.label} type="button" onClick={() => selectSlide(index)} aria-current={activeIndex === index ? "true" : undefined} className={`min-h-11 min-w-0 rounded-lg border px-2 py-2 text-[10px] font-extrabold uppercase tracking-[0.07em] transition-[border-color,background-color,color,box-shadow] duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/70 motion-reduce:transition-none lg:text-xs ${activeIndex === index ? "border-cyan-300/45 bg-cyan-300/[0.1] text-cyan-100 shadow-[inset_0_1px_0_rgba(165,243,252,0.08),0_0_18px_rgba(0,239,255,0.06)]" : "border-white/[0.06] bg-[#0d2944]/70 text-white/70 hover:border-cyan-300/20 hover:text-white"}`}>{slide.label}</button>
+              <button key={slide.label} type="button" onClick={(event) => selectSlide(index, event.detail === 0)} aria-current={activeIndex === index ? "true" : undefined} className={`min-h-11 min-w-0 rounded-lg border px-2 py-2 text-[10px] font-extrabold uppercase tracking-[0.07em] transition-[border-color,background-color,color,box-shadow] duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/70 motion-reduce:transition-none lg:text-xs ${activeIndex === index ? "border-cyan-300/45 bg-cyan-300/[0.1] text-cyan-100 shadow-[inset_0_1px_0_rgba(165,243,252,0.08),0_0_18px_rgba(0,239,255,0.06)]" : "border-white/[0.06] bg-[#0d2944]/70 text-white/70 hover:border-cyan-300/20 hover:text-white"}`}>{slide.label}</button>
             ))}
           </div>
 
@@ -241,38 +241,36 @@ const ModulesSection = () => {
                 if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)) paginate(dx < 0 ? 1 : -1);
               }}
             >
-              <AnimatePresence initial={false}>
-                <motion.article
-                  key={activeIndex}
-                  initial={reduced ? false : { opacity: 0.55 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: reduced ? 0 : 0.3, ease: "easeOut" }}
-                  className="grid min-w-0 min-[900px]:grid-cols-[minmax(250px,0.85fr)_minmax(0,1.15fr)] min-[900px]:items-center min-[900px]:gap-6"
-                >
-                  <div className="flex min-w-0 items-center justify-center bg-[radial-gradient(ellipse_at_center,rgba(0,239,255,0.075),transparent_68%)] px-2 pt-2 min-[900px]:order-2 min-[900px]:p-4">
-                    <img src={activeSlide.image} alt={`Tablet com a tela de ${activeSlide.label}`} width={1122} height={1402} loading="lazy" decoding="async" draggable={false} className="h-auto w-full max-w-[440px] select-none object-contain" />
-                  </div>
+              <motion.article
+                key={activeIndex}
+                initial={reduced || instant ? false : { opacity: 0.84 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: reduced || instant ? 0 : 0.22, ease: [0.23, 1, 0.32, 1] }}
+                className="grid min-w-0 min-[900px]:grid-cols-[minmax(250px,0.85fr)_minmax(0,1.15fr)] min-[900px]:items-center min-[900px]:gap-6"
+              >
+                <div className="flex min-w-0 items-center justify-center bg-[radial-gradient(ellipse_at_center,rgba(0,239,255,0.075),transparent_68%)] px-2 pt-2 min-[900px]:order-2 min-[900px]:p-4">
+                  <img src={activeSlide.image} alt={`Tablet com a tela de ${activeSlide.label}`} width={1122} height={1402} loading="lazy" decoding="async" draggable={false} className="h-auto w-full max-w-[440px] select-none object-contain" />
+                </div>
 
-                  <div className="min-w-0 px-4 pb-4 pt-3 sm:px-6 min-[900px]:order-1 min-[900px]:px-0 min-[900px]:py-8">
-                    <div className="flex items-center justify-between gap-3">
-                      <span className="text-[10px] font-extrabold uppercase tracking-[0.15em] text-cyan-300/85 sm:text-xs">{activeSlide.label}</span>
-                      <span className="shrink-0 text-sm font-bold tabular-nums text-white/60"><span className="text-cyan-300">{String(activeIndex + 1).padStart(2, "0")}</span> / {String(slides.length).padStart(2, "0")}</span>
-                    </div>
-                    <h3 className="mt-3 text-xl font-extrabold leading-tight tracking-tight text-white sm:text-3xl">{activeSlide.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-white/75 sm:mt-4 sm:text-base">{activeSlide.description}</p>
+                <div className="min-w-0 px-4 pb-4 pt-3 sm:px-6 min-[900px]:order-1 min-[900px]:px-0 min-[900px]:py-8">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-[10px] font-extrabold uppercase tracking-[0.15em] text-cyan-300/85 sm:text-xs">{activeSlide.label}</span>
+                    <span className="shrink-0 text-sm font-bold tabular-nums text-white/60"><span className="text-cyan-300">{String(activeIndex + 1).padStart(2, "0")}</span> / {String(slides.length).padStart(2, "0")}</span>
                   </div>
-                </motion.article>
-              </AnimatePresence>
+                  <h3 className="mt-3 text-xl font-extrabold leading-tight tracking-tight text-white sm:text-3xl">{activeSlide.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-white/75 sm:mt-4 sm:text-base">{activeSlide.description}</p>
+                </div>
+              </motion.article>
             </div>
 
             <div className="flex items-center gap-3 border-t border-cyan-200/[0.09] px-3 py-1 sm:px-4 min-[900px]:px-0">
-              <button type="button" onClick={() => paginate(-1)} aria-label="Slide anterior" className={`${arrowClassName} min-[900px]:left-2`}><ArrowLeft className="h-5 w-5" aria-hidden="true" /></button>
+              <button type="button" onClick={(event) => paginate(-1, event.detail === 0)} aria-label="Slide anterior" className={`${arrowClassName} min-[900px]:left-2`}><ArrowLeft className="h-5 w-5" aria-hidden="true" /></button>
               <div className="flex flex-1 items-center gap-2" aria-label={`Slide ${activeIndex + 1} de ${slides.length}`}>
                 {slides.map((slide, index) => (
-                  <button key={slide.label} type="button" onClick={() => selectSlide(index)} aria-label={`Ir para ${slide.label}`} aria-current={activeIndex === index ? "true" : undefined} className="flex h-11 flex-1 items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/70"><span className={`h-1.5 w-full rounded-full transition-[background-color,box-shadow] duration-300 motion-reduce:transition-none ${activeIndex === index ? "bg-cyan-300 shadow-[0_0_10px_rgba(0,239,255,0.55)]" : "bg-white/15"}`} /></button>
+                  <button key={slide.label} type="button" onClick={(event) => selectSlide(index, event.detail === 0)} aria-label={`Ir para ${slide.label}`} aria-current={activeIndex === index ? "true" : undefined} className="flex h-11 flex-1 items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/70"><span className={`h-1.5 w-full rounded-full transition-[background-color,box-shadow] duration-300 motion-reduce:transition-none ${activeIndex === index ? "bg-cyan-300 shadow-[0_0_10px_rgba(0,239,255,0.55)]" : "bg-white/15"}`} /></button>
                 ))}
               </div>
-              <button type="button" onClick={() => paginate(1)} aria-label="Próximo slide" className={`${arrowClassName} min-[900px]:right-2`}><ArrowRight className="h-5 w-5" aria-hidden="true" /></button>
+              <button type="button" onClick={(event) => paginate(1, event.detail === 0)} aria-label="Próximo slide" className={`${arrowClassName} min-[900px]:right-2`}><ArrowRight className="h-5 w-5" aria-hidden="true" /></button>
             </div>
           </div>
 
