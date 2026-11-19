@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import {
   Accordion,
   AccordionContent,
@@ -27,33 +26,25 @@ const faqs = [
 const FAQSection = () => (
   <section className="relative py-16 md:py-24 overflow-hidden" style={{ background: '#0A192F' }}>
     <div className="container relative z-10 mx-auto px-4">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
+      <div
         className="text-center mb-16"
       >
         <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight gradient-text">
           Perguntas Frequentes
         </h2>
-      </motion.div>
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
+      <div
         className="max-w-3xl mx-auto"
       >
-        <Accordion type="single" collapsible className="space-y-3">
+        <Accordion type="single" collapsible className="sales-faq space-y-3">
           {faqs.map((faq, i) => (
             <AccordionItem
               key={i}
               value={`faq-${i}`}
               className="card-premium px-6 border-none"
             >
-              <AccordionTrigger className="text-white font-semibold text-left hover:no-underline hover:text-cyan-400 transition-colors py-5">
+              <AccordionTrigger className="text-white font-semibold text-left hover:no-underline hover:text-cyan-400 transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 py-5">
                 {faq.q}
               </AccordionTrigger>
               <AccordionContent className="text-white pb-5 leading-relaxed">
@@ -63,7 +54,7 @@ const FAQSection = () => (
           ))}
         </Accordion>
 
-      </motion.div>
+      </div>
     </div>
   </section>
 );

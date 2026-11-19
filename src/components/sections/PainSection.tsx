@@ -1,9 +1,12 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { Clock3, GitCompareArrows, Layers3, ShieldAlert } from "lucide-react";
+import optionsIcon from "@/assets/dificuldades/opcoes.png";
+import securityIcon from "@/assets/dificuldades/seguranca.png";
+import decisionIcon from "@/assets/dificuldades/decisao.png";
+import timeIcon from "@/assets/dificuldades/tempo.png";
 
 const pains = [
   {
-    icon: Layers3,
+    icon: optionsIcon,
     label: "Poucas opções",
     text: "Compra sempre dos mesmos fornecedores e encontra poucas opções para comparar.",
     surface:
@@ -11,7 +14,7 @@ const pains = [
     accent: "left-6 right-[42%]",
   },
   {
-    icon: ShieldAlert,
+    icon: securityIcon,
     label: "Segurança",
     text: "Tem receio de cair em golpes ao comprar de fornecedores que ainda não conhece.",
     surface:
@@ -19,7 +22,7 @@ const pains = [
     accent: "left-[44%] right-6",
   },
   {
-    icon: GitCompareArrows,
+    icon: decisionIcon,
     label: "Decisão",
     text: "Encontra fornecedores, mas tem dificuldade para comparar opções e decidir onde comprar.",
     surface:
@@ -27,7 +30,7 @@ const pains = [
     accent: "left-10 right-[36%]",
   },
   {
-    icon: Clock3,
+    icon: timeIcon,
     label: "Tempo",
     text: "Passa horas pesquisando fornecedores e ainda termina sem saber por onde comprar.",
     surface:
@@ -50,10 +53,10 @@ const PainSection = () => {
       />
       <div className="container relative z-10 mx-auto px-4">
         <motion.div
-          initial={reduced ? false : { opacity: 0, y: 24 }}
+          initial={reduced ? false : { opacity: 0.94, y: 5 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.35 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+          transition={{ duration: 0.24, ease: "easeOut" }}
           className="mx-auto mb-14 max-w-4xl text-center md:mb-16"
         >
           <h2 className="mb-6 text-3xl font-extrabold tracking-tight text-white md:text-4xl lg:text-5xl">
@@ -70,33 +73,21 @@ const PainSection = () => {
           {pains.map((pain, i) => (
             <motion.div
               key={pain.label}
-              initial={reduced ? false : { opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={reduced ? false : { opacity: 0.42, transform: "translateY(16px)" }}
+              whileInView={{ opacity: 1, transform: "translateY(0px)" }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.45, delay: reduced ? 0 : i * 0.09, ease: "easeOut" }}
-              variants={{
-                hover: {
-                  y: -3,
-                  borderColor: "rgba(103,232,249,0.34)",
-                  boxShadow: "0 22px 52px rgba(0,0,0,0.34), 0 0 26px rgba(0,239,255,0.08)",
-                },
-                tap: { scale: 0.992 },
-              }}
-              whileHover={reduced ? undefined : "hover"}
-              whileTap={reduced ? undefined : "tap"}
+              transition={{ duration: 0.46, delay: reduced ? 0 : i * 0.1, ease: [0.22, 0.61, 0.36, 1] }}
               className={`group relative flex min-h-[132px] items-start gap-4 overflow-hidden rounded-2xl border border-cyan-200/[0.14] p-5 shadow-[0_14px_38px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.035)] sm:min-h-[140px] sm:gap-5 sm:p-6 ${pain.surface}`}
             >
               <div
                 aria-hidden="true"
                 className={`pointer-events-none absolute top-0 h-px bg-gradient-to-r from-transparent via-cyan-200/65 to-transparent opacity-70 ${pain.accent}`}
               />
-              <motion.div
-                variants={{ hover: { scale: 1.04, rotate: i % 2 === 0 ? -2 : 2 } }}
-                className="relative mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-cyan-200/[0.16] bg-[#071b30]/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_8px_20px_rgba(0,0,0,0.24)]"
+              <div
+                className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center"
               >
-                <div className="absolute inset-1 rounded-lg bg-red-400/[0.045] opacity-0 transition-opacity duration-300 group-hover:opacity-100 motion-reduce:transition-none" />
-                <pain.icon className="relative h-5 w-5 text-red-300" strokeWidth={1.8} aria-hidden="true" />
-              </motion.div>
+                <img src={pain.icon} alt="" loading="lazy" className="h-full w-full object-contain" />
+              </div>
               <div className="min-w-0 pt-0.5">
                 <p className="mb-1.5 text-[10px] font-extrabold uppercase leading-none tracking-[0.16em] text-cyan-300/85 sm:text-[11px]">
                   {pain.label}
@@ -108,10 +99,10 @@ const PainSection = () => {
         </div>
 
         <motion.p
-          initial={reduced ? false : { opacity: 0, y: 12 }}
+          initial={reduced ? false : { opacity: 0.94, y: 5 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.6 }}
-          transition={{ duration: 0.5, delay: reduced ? 0 : 0.28, ease: "easeOut" }}
+          transition={{ duration: 0.24, ease: "easeOut" }}
           className="mx-auto mt-12 max-w-2xl text-center text-sm font-semibold leading-relaxed text-cyan-200/80 sm:text-base"
         >
           Foi para simplificar esse caminho que o EmpreendaJá começou pelos fornecedores.

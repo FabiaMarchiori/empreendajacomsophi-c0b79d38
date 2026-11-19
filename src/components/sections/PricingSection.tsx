@@ -1,3 +1,4 @@
+import type { PointerEvent } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, CalendarCheck, Check, LockKeyhole, MessageCircle, ShieldCheck, Sparkles, X, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -17,11 +18,29 @@ const features = [
 const PricingSection = () => {
   const reduced = useReducedMotion();
 
-  const entrance = (x: number, delay = 0) => ({
-    initial: reduced ? { opacity: 0 } : { opacity: 0, x },
-    whileInView: reduced ? { opacity: 1 } : { opacity: 1, x: 0 },
-    viewport: { once: true, amount: 0.25 },
-    transition: { duration: reduced ? 0.01 : 0.55, delay: reduced ? 0 : delay, ease: "easeOut" as const },
+  const clearTouchFeedback = (event: PointerEvent<HTMLAnchorElement>) => {
+    event.currentTarget.removeAttribute("data-touch-active");
+  };
+  const touchFeedback = {
+    onPointerDown: (event: PointerEvent<HTMLAnchorElement>) => {
+      if (!reduced && event.pointerType === "touch") {
+        event.currentTarget.setAttribute("data-touch-active", "");
+      }
+    },
+    onPointerUp: clearTouchFeedback,
+    onPointerCancel: clearTouchFeedback,
+    onLostPointerCapture: clearTouchFeedback,
+  };
+
+  const planEntrance = (delay: number) => ({
+    initial: reduced ? false as const : { opacity: 0.5, transform: "translateY(15px)" },
+    whileInView: { opacity: 1, transform: "translateY(0px)" },
+    viewport: { once: true, amount: 0.27 },
+    transition: {
+      duration: reduced ? 0 : 0.5,
+      delay: reduced ? 0 : delay,
+      ease: [0.22, 0.61, 0.36, 1] as [number, number, number, number],
+    },
   });
 
   return (
@@ -29,10 +48,10 @@ const PricingSection = () => {
       <div className="pointer-events-none absolute left-1/2 top-0 h-[400px] w-[800px] -translate-x-1/2 rounded-full bg-cyan-500/5 blur-[150px]" />
       <div className="container relative z-10 mx-auto px-4">
         <motion.header
-          initial={reduced ? { opacity: 0 } : { opacity: 0, y: 24 }}
+          initial={reduced ? false : { opacity: 0.94, y: 6 }}
           whileInView={reduced ? { opacity: 1 } : { opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.45 }}
-          transition={{ duration: reduced ? 0.01 : 0.55, ease: "easeOut" }}
+          transition={{ duration: reduced ? 0.01 : 0.24, ease: "easeOut" }}
           className="mx-auto mb-12 max-w-3xl text-center md:mb-14"
         >
           <span className="mb-5 inline-block rounded-full bg-cyan-500/10 px-4 py-1.5 text-sm font-bold tracking-wide text-white">
@@ -45,8 +64,8 @@ const PricingSection = () => {
 
         <div className="mx-auto grid max-w-4xl items-stretch gap-8 md:grid-cols-2">
           <motion.article
-            {...entrance(-24)}
-            className="card-premium flex flex-col p-6 transition-[transform,border-color] duration-300 [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-0.5 [@media(hover:hover)_and_(pointer:fine)]:hover:border-cyan-300/25 sm:p-8"
+            {...planEntrance(0)}
+            className="card-premium flex flex-col p-6 transition-[translate,border-color] duration-200 motion-reduce:transition-none [@media(hover:hover)_and_(pointer:fine)]:motion-safe:hover:[translate:0_-2px] [@media(hover:hover)_and_(pointer:fine)]:hover:border-cyan-300/25 sm:p-8"
           >
             <header className="mb-6">
               <h3 className="mb-1.5 text-xl font-bold text-white">Plano Mensal</h3>
@@ -78,10 +97,11 @@ const PricingSection = () => {
             </ul>
 
             <a
+              {...touchFeedback}
               href="https://pay.kiwify.com.br/gNROnVP"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-secondary-dark inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-xl px-5 py-4 text-center font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A192F]"
+              className="btn-secondary-dark sales-press inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-xl px-5 py-4 text-center font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A192F]"
             >
               Assinar Mensal
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
@@ -89,11 +109,11 @@ const PricingSection = () => {
           </motion.article>
 
           <motion.article
-            {...entrance(24, 0.06)}
-            className="campaign-plan relative flex flex-col p-6 transition-[transform,border-color] duration-300 [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-0.5 sm:p-8"
+            {...planEntrance(0.1)}
+            className="campaign-plan relative flex flex-col p-6 transition-[translate,border-color] duration-200 motion-reduce:transition-none [@media(hover:hover)_and_(pointer:fine)]:motion-safe:hover:[translate:0_-2px] sm:p-8"
           >
-            <div className="absolute -top-4 left-1/2 flex -translate-x-1/2 items-center gap-1.5 whitespace-nowrap rounded-full bg-campaign px-5 py-1.5 text-sm font-bold text-campaign-foreground">
-              <Sparkles aria-hidden="true" className="h-4 w-4" />
+            <div className="absolute -top-5 left-1/2 flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full bg-campaign px-6 py-2 text-sm font-extrabold tracking-wide text-campaign-foreground ring-4 ring-campaign/15 sm:text-base">
+              <Sparkles aria-hidden="true" className="sales-plan-sparkle h-4 w-4" />
               BLACK FRIDAY
             </div>
 
@@ -103,12 +123,12 @@ const PricingSection = () => {
             </header>
 
             <div className="mb-7">
-              <p className="mb-2 text-base text-foreground">De <s>{formatCampaignPrice(BLACK_NOVEMBER.originalPrice)}</s></p>
-              <div>
-                <span className="text-5xl font-extrabold text-foreground">{formatCampaignPrice(BLACK_NOVEMBER.price)}</span>
-                <span className="text-foreground">/ano</span>
+              <p className="mb-2 text-sm text-white/75">De <s>{formatCampaignPrice(BLACK_NOVEMBER.originalPrice)}</s></p>
+              <div className="flex flex-wrap items-baseline gap-x-1.5">
+                <span className="text-[clamp(2.85rem,5vw,4.25rem)] font-extrabold leading-none tracking-tight text-foreground">{formatCampaignPrice(BLACK_NOVEMBER.price)}</span>
+                <span className="text-base font-semibold text-white/85">/ano</span>
               </div>
-              <p className="mt-3 text-sm font-bold text-campaign">Economize {formatCampaignPrice(BLACK_NOVEMBER.savings)} • {BLACK_NOVEMBER.discountPercent}% de desconto</p>
+              <p className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-sm font-bold text-campaign">Economize {formatCampaignPrice(BLACK_NOVEMBER.savings)} <span aria-hidden="true">•</span> <strong className="rounded-md bg-campaign/15 px-2.5 py-1 text-sm font-extrabold text-campaign">{BLACK_NOVEMBER.discountPercent}% de desconto</strong></p>
               <p className="mt-2 text-sm text-foreground">{BLACK_NOVEMBER.accessMonths} meses de acesso.</p>
               <p className="mt-2 text-xs text-foreground">Oferta válida até 30/11/2026.</p>
             </div>
@@ -132,8 +152,8 @@ const PricingSection = () => {
               </li>
             </ul>
 
-            <Button asChild variant="campaign" className="min-h-14 w-full whitespace-normal rounded-xl px-5 py-4 text-center text-lg font-bold">
-              <a href={BLACK_NOVEMBER.checkout} target="_blank" rel="noopener noreferrer">
+            <Button asChild variant="campaign" className="sales-press min-h-14 w-full whitespace-normal rounded-xl px-5 py-4 text-center text-lg font-extrabold">
+              <a {...touchFeedback} href={BLACK_NOVEMBER.checkout} target="_blank" rel="noopener noreferrer">
                 Assinar Plano Anual
                 <ArrowRight aria-hidden="true" className="h-5 w-5" />
               </a>
@@ -142,10 +162,10 @@ const PricingSection = () => {
         </div>
 
         <motion.ul
-          initial={reduced ? { opacity: 0 } : { opacity: 0, y: 12 }}
+          initial={reduced ? false : { opacity: 0.94, y: 5 }}
           whileInView={reduced ? { opacity: 1 } : { opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.6 }}
-          transition={{ duration: reduced ? 0.01 : 0.45, delay: reduced ? 0 : 0.12 }}
+          transition={{ duration: reduced ? 0.01 : 0.24, delay: reduced ? 0 : 0.03 }}
           className="mx-auto mt-8 flex max-w-3xl flex-wrap items-center justify-center gap-x-7 gap-y-3 rounded-xl border border-cyan-300/12 bg-white/[0.03] px-5 py-3.5 text-center"
         >
           {[
@@ -164,10 +184,10 @@ const PricingSection = () => {
         </motion.ul>
 
         <motion.div
-          initial={reduced ? { opacity: 0 } : { opacity: 0, y: 16 }}
+          initial={reduced ? false : { opacity: 0.94, y: 5 }}
           whileInView={reduced ? { opacity: 1 } : { opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: reduced ? 0.01 : 0.45, delay: reduced ? 0 : 0.18 }}
+          transition={{ duration: reduced ? 0.01 : 0.24, delay: reduced ? 0 : 0.06 }}
           className="mt-10 text-center"
         >
           <a

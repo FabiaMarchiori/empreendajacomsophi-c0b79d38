@@ -320,26 +320,33 @@ const HeroSection = () => (
   <section id="inicio" className="campaign-hero relative isolate overflow-hidden bg-[#061423]">
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 bg-no-repeat bg-right [background-size:auto_clamp(6rem,37vw,18rem)] top-[var(--navigation-height)] lg:bg-contain"
+      className="sales-hero-art pointer-events-none absolute inset-0 bg-no-repeat bg-right [background-size:auto_clamp(6rem,37vw,18rem)] top-[var(--navigation-height)] max-md:hidden lg:bg-contain"
       style={{ backgroundImage: `url("${heroTablet}")` }}
     />
-    <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 w-[45%] bg-gradient-to-r from-[#061423] to-transparent lg:hidden" />
-    <div className="relative z-10 mx-auto w-full max-w-[1440px] px-5 py-9 sm:px-8 sm:py-12 lg:flex lg:min-h-[max(26rem,33.333vw)] lg:items-center lg:py-12 xl:px-12">
+    <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 w-[45%] bg-gradient-to-r from-[#061423] to-transparent max-md:hidden lg:hidden" />
+    <div className="relative z-10 mx-auto w-full max-w-[1440px] px-5 py-9 sm:px-8 sm:py-12 max-md:py-7 lg:flex lg:min-h-[max(26rem,33.333vw)] lg:items-center lg:py-12 xl:px-12">
       <div className="max-w-xl lg:w-[46%]">
-        <h1 className="max-w-[15ch] text-4xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-5xl xl:text-6xl">
+        <h1 className="sales-hero-enter max-w-[15ch] text-4xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-5xl xl:text-6xl">
           Seu próximo <span className="text-cyan-300">fornecedor</span> pode estar aqui.
         </h1>
-        <p className="mt-5 max-w-[min(56%,32ch)] text-base lg:max-w-lg leading-relaxed text-slate-200 sm:text-lg">
+        <p className="sales-hero-enter mt-5 max-w-[min(56%,32ch)] text-base leading-relaxed max-md:max-w-none lg:max-w-lg text-slate-200 sm:text-lg">
           Encontre importadoras e fornecedores da 25 de Março de forma mais rápida, organizada e segura.
         </p>
+        <img
+          src={heroTablet}
+          alt="Tablet com a tela inicial do EmpreendaJá com Soph"
+          width={2172}
+          height={724}
+          className="sales-hero-art mx-auto mt-5 block h-auto w-full md:hidden"
+        />
         <a
           href="#planos"
-          className="mt-7 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-xl bg-cyan-300 px-4 py-3 text-center text-sm font-extrabold text-[#061423] transition-colors hover:bg-cyan-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#061423] sm:w-auto sm:px-6"
+          className="sales-hero-enter sales-press mt-7 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-xl bg-cyan-300 px-4 py-3 text-center text-sm font-extrabold text-[#061423] transition-colors hover:bg-cyan-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#061423] sm:px-6 max-md:mt-5 md:w-auto"
         >
           QUERO ACESSAR OS FORNECEDORES
           <ArrowRight aria-hidden="true" className="h-5 w-5 shrink-0" />
         </a>
-        <ul className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-sm text-slate-200">
+        <ul className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-sm text-slate-200 max-md:mt-4">
           {benefits.map((benefit) => (
             <li key={benefit} className="inline-flex items-center gap-2">
               <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-cyan-300" />
