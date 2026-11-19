@@ -85,6 +85,7 @@ const sectionReveal = (reduced: boolean, delay = 0, distance = 6) => ({
 });
 
 export const BenefitsSection = () => {
+  const [touchedPillar, setTouchedPillar] = useState<string | null>(null);
   const reduced = !!useReducedMotion();
   const reveal = (delay = 0, distance = 6) => sectionReveal(reduced, delay, distance);
 
@@ -103,6 +104,13 @@ export const BenefitsSection = () => {
           {pillars.map((pillar, index) => (
             <article
               key={pillar.title}
+              data-touch-active={touchedPillar === pillar.title || undefined}
+              onPointerDown={(event) => {
+                if (!reduced && event.pointerType === "touch") setTouchedPillar(pillar.title);
+              }}
+              onPointerUp={() => setTouchedPillar(null)}
+              onPointerCancel={() => setTouchedPillar(null)}
+              onLostPointerCapture={() => setTouchedPillar(null)}
               className={`sales-benefit group relative flex min-h-[144px] items-start gap-4 overflow-hidden rounded-2xl border p-5 shadow-[0_14px_38px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.04)] sm:gap-5 sm:p-6 ${index === 0 ? "border-cyan-200/[0.24]" : "border-cyan-200/[0.13]"} ${pillar.surface}`}
             >
               <div aria-hidden="true" className={`pointer-events-none absolute top-0 h-px bg-gradient-to-r from-transparent via-cyan-200/65 to-transparent opacity-70 ${pillar.accent}`} />

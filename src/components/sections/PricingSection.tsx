@@ -1,3 +1,4 @@
+import type { PointerEvent } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, CalendarCheck, Check, LockKeyhole, MessageCircle, ShieldCheck, Sparkles, X, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -16,6 +17,20 @@ const features = [
 
 const PricingSection = () => {
   const reduced = useReducedMotion();
+
+  const clearTouchFeedback = (event: PointerEvent<HTMLAnchorElement>) => {
+    event.currentTarget.removeAttribute("data-touch-active");
+  };
+  const touchFeedback = {
+    onPointerDown: (event: PointerEvent<HTMLAnchorElement>) => {
+      if (!reduced && event.pointerType === "touch") {
+        event.currentTarget.setAttribute("data-touch-active", "");
+      }
+    },
+    onPointerUp: clearTouchFeedback,
+    onPointerCancel: clearTouchFeedback,
+    onLostPointerCapture: clearTouchFeedback,
+  };
 
   const planEntrance = (delay: number) => ({
     initial: reduced ? false as const : { opacity: 0.5, transform: "translateY(15px)" },
@@ -82,6 +97,7 @@ const PricingSection = () => {
             </ul>
 
             <a
+              {...touchFeedback}
               href="https://pay.kiwify.com.br/gNROnVP"
               target="_blank"
               rel="noopener noreferrer"
@@ -137,7 +153,7 @@ const PricingSection = () => {
             </ul>
 
             <Button asChild variant="campaign" className="sales-press min-h-14 w-full whitespace-normal rounded-xl px-5 py-4 text-center text-lg font-extrabold">
-              <a href={BLACK_NOVEMBER.checkout} target="_blank" rel="noopener noreferrer">
+              <a {...touchFeedback} href={BLACK_NOVEMBER.checkout} target="_blank" rel="noopener noreferrer">
                 Assinar Plano Anual
                 <ArrowRight aria-hidden="true" className="h-5 w-5" />
               </a>
