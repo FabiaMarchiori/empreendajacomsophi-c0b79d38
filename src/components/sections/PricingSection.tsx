@@ -92,7 +92,7 @@ const PricingSection = () => {
             {...entrance(24, 0.06)}
             className="campaign-plan relative flex flex-col p-6 transition-[transform,border-color] duration-300 [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-0.5 sm:p-8"
           >
-            <div className="absolute -top-4 left-1/2 flex -translate-x-1/2 items-center gap-1.5 whitespace-nowrap rounded-full bg-campaign px-5 py-1.5 text-sm font-bold text-campaign-foreground">
+            <div className="absolute -top-5 left-1/2 flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full bg-campaign px-6 py-2 text-sm font-extrabold tracking-wide text-campaign-foreground ring-4 ring-campaign/15 sm:text-base">
               <Sparkles aria-hidden="true" className="h-4 w-4" />
               BLACK FRIDAY
             </div>
@@ -103,12 +103,12 @@ const PricingSection = () => {
             </header>
 
             <div className="mb-7">
-              <p className="mb-2 text-base text-foreground">De <s>{formatCampaignPrice(BLACK_NOVEMBER.originalPrice)}</s></p>
-              <div>
-                <span className="text-5xl font-extrabold text-foreground">{formatCampaignPrice(BLACK_NOVEMBER.price)}</span>
-                <span className="text-foreground">/ano</span>
+              <p className="mb-2 text-sm text-white/75">De <s>{formatCampaignPrice(BLACK_NOVEMBER.originalPrice)}</s></p>
+              <div className="flex flex-wrap items-baseline gap-x-1.5">
+                <span className="text-[clamp(2.85rem,5vw,4.25rem)] font-extrabold leading-none tracking-tight text-foreground">{formatCampaignPrice(BLACK_NOVEMBER.price)}</span>
+                <span className="text-base font-semibold text-white/85">/ano</span>
               </div>
-              <p className="mt-3 text-sm font-bold text-campaign">Economize {formatCampaignPrice(BLACK_NOVEMBER.savings)} • {BLACK_NOVEMBER.discountPercent}% de desconto</p>
+              <p className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-sm font-bold text-campaign">Economize {formatCampaignPrice(BLACK_NOVEMBER.savings)} <span aria-hidden="true">•</span> <strong className="rounded-md bg-campaign/15 px-2.5 py-1 text-sm font-extrabold text-campaign">{BLACK_NOVEMBER.discountPercent}% de desconto</strong></p>
               <p className="mt-2 text-sm text-foreground">{BLACK_NOVEMBER.accessMonths} meses de acesso.</p>
               <p className="mt-2 text-xs text-foreground">Oferta válida até 30/11/2026.</p>
             </div>
@@ -132,7 +132,7 @@ const PricingSection = () => {
               </li>
             </ul>
 
-            <Button asChild variant="campaign" className="min-h-14 w-full whitespace-normal rounded-xl px-5 py-4 text-center text-lg font-bold">
+            <Button asChild variant="campaign" className="min-h-14 w-full whitespace-normal rounded-xl px-5 py-4 text-center text-lg font-extrabold">
               <a href={BLACK_NOVEMBER.checkout} target="_blank" rel="noopener noreferrer">
                 Assinar Plano Anual
                 <ArrowRight aria-hidden="true" className="h-5 w-5" />

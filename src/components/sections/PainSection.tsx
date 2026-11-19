@@ -1,9 +1,12 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { Clock3, GitCompareArrows, Layers3, ShieldAlert } from "lucide-react";
+import optionsIcon from "@/assets/dificuldades/opcoes.png";
+import securityIcon from "@/assets/dificuldades/seguranca.png";
+import decisionIcon from "@/assets/dificuldades/decisao.png";
+import timeIcon from "@/assets/dificuldades/tempo.png";
 
 const pains = [
   {
-    icon: Layers3,
+    icon: optionsIcon,
     label: "Poucas opções",
     text: "Compra sempre dos mesmos fornecedores e encontra poucas opções para comparar.",
     surface:
@@ -11,7 +14,7 @@ const pains = [
     accent: "left-6 right-[42%]",
   },
   {
-    icon: ShieldAlert,
+    icon: securityIcon,
     label: "Segurança",
     text: "Tem receio de cair em golpes ao comprar de fornecedores que ainda não conhece.",
     surface:
@@ -19,7 +22,7 @@ const pains = [
     accent: "left-[44%] right-6",
   },
   {
-    icon: GitCompareArrows,
+    icon: decisionIcon,
     label: "Decisão",
     text: "Encontra fornecedores, mas tem dificuldade para comparar opções e decidir onde comprar.",
     surface:
@@ -27,7 +30,7 @@ const pains = [
     accent: "left-10 right-[36%]",
   },
   {
-    icon: Clock3,
+    icon: timeIcon,
     label: "Tempo",
     text: "Passa horas pesquisando fornecedores e ainda termina sem saber por onde comprar.",
     surface:
@@ -92,10 +95,9 @@ const PainSection = () => {
               />
               <motion.div
                 variants={{ hover: { scale: 1.04, rotate: i % 2 === 0 ? -2 : 2 } }}
-                className="relative mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-cyan-200/[0.16] bg-[#071b30]/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_8px_20px_rgba(0,0,0,0.24)]"
+                className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center"
               >
-                <div className="absolute inset-1 rounded-lg bg-red-400/[0.045] opacity-0 transition-opacity duration-300 group-hover:opacity-100 motion-reduce:transition-none" />
-                <pain.icon className="relative h-5 w-5 text-red-300" strokeWidth={1.8} aria-hidden="true" />
+                <img src={pain.icon} alt="" loading="lazy" className="h-full w-full object-contain" />
               </motion.div>
               <div className="min-w-0 pt-0.5">
                 <p className="mb-1.5 text-[10px] font-extrabold uppercase leading-none tracking-[0.16em] text-cyan-300/85 sm:text-[11px]">

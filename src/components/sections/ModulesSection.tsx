@@ -110,8 +110,8 @@ export const BenefitsSection = () => {
               className={`group relative flex min-h-[144px] items-start gap-4 overflow-hidden rounded-2xl border p-5 shadow-[0_14px_38px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.04)] sm:gap-5 sm:p-6 ${index === 0 ? "border-cyan-200/[0.24]" : "border-cyan-200/[0.13]"} ${pillar.surface}`}
             >
               <div aria-hidden="true" className={`pointer-events-none absolute top-0 h-px bg-gradient-to-r from-transparent via-cyan-200/65 to-transparent opacity-70 ${pillar.accent}`} />
-              <div className="relative flex h-14 w-14 shrink-0 sm:h-16 sm:w-16 items-center justify-center rounded-xl border border-cyan-200/[0.18] bg-[#071b30]/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.055),0_8px_20px_rgba(0,0,0,0.24)]">
-                <motion.div variants={{ hover: { scale: 1.04, rotate: index % 2 === 0 ? -2 : 2 } }} className="grid h-full w-full place-items-center p-1">
+              <div className="relative flex h-14 w-14 shrink-0 items-center justify-center sm:h-16 sm:w-16">
+                <motion.div variants={{ hover: { scale: 1.04, rotate: index % 2 === 0 ? -2 : 2 } }} className="grid h-full w-full place-items-center">
                   <img src={pillar.icon} alt="" loading="lazy" className="h-full w-full object-contain" />
                 </motion.div>
               </div>
@@ -131,7 +131,7 @@ export const BenefitsSection = () => {
 };
 
 const ModulesSection = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(2);
   const [tourInView, setTourInView] = useState(false);
   const [pageVisible, setPageVisible] = useState(() => typeof document === "undefined" || !document.hidden);
   const [pressedPointer, setPressedPointer] = useState<number | null>(null);
